@@ -1,0 +1,152 @@
+$color-main: var(--color-main);
+$color-submain: var(--color-submain);
+
+:export {
+  colorSubMain: $color-submain;
+  colorMain: $color-main;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    background: url("../../assets/images/login/background.avif") no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #fff;
+
+    .login_wrapper {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+
+        .login_container {
+            position: relative;
+            width: 400px;
+            height: 450px;
+            background: transparent;
+            border: none;
+            border-radius: 20px;
+            backdrop-filter: blur(100px) brightness(80%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .login_form {
+                flex-direction: column;
+
+                .title {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    h2 {
+                        font-size: 2em;
+                        color: #fff;
+                        text-align: center;
+                    }
+                }
+                
+                .field_form {
+                    .input_box {
+                        position: relative;
+                        margin: 20px 0;
+                        width: 310px;
+
+                        input {
+                            width: 100%;
+                            height: 50px;
+                            background: transparent;
+                            border: none;
+                            box-shadow: none;
+                            outline: none;
+                            font-size: 1em;
+                            padding: 0 35px 0 5px;
+                            color: #fff;
+                            border-bottom: 2px solid #fff;
+                            border-radius: 0px !important;
+
+                            &:focus {
+                                outline: none;
+                                border: 0px #fff !important;
+                                box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+
+                                &:focus~label,
+                                &:valid~label {
+                                    top: -5px;
+                                }
+                            }
+
+                            &.has_value_user {
+                                &:valid~label {
+                                    top: -5px;
+                                }
+                            }
+
+                            &.has_value_pass {
+                                &:valid~label {
+                                    top: -5px;
+                                }
+                            }
+                        }
+
+                        ion-icon {
+                            position: absolute;
+                            right: 8px;
+                            color: #fff;
+                            font-size: 1.2em;
+                            top: 20px;
+                        }
+
+                        label {
+                            position: absolute;
+                            top: 38%;
+                            left: 5px;
+                            transform: translateY(-50%);
+                            color: #fff !important;
+                            font-size: 13px;
+                            font-weight: 500 !important;
+                            pointer-events: none;
+                            transition: 0.5s;
+                            letter-spacing: 0.5px;
+                        }
+    
+                        .error_message {
+                            display: inline-block;
+                            animation: slideInFromLeft 1.5s ease-in-out;
+                        }
+                        
+                        @keyframes slideInFromLeft {
+                            0% {
+                                transform: translateX(0%);
+                                opacity: 0;
+                            }
+                            100% {
+                                transform: translateX(0);
+                                opacity: 1;
+                            }
+                        }
+                    }
+                }
+        
+                .btn_submit {
+                    .custom_btn {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background-color: #fff;
+                        border: none;
+                        transition: background-color 0.5s, border-color 0.5s, color 0.5s;
+        
+                        &:hover {
+                            background-color: #81dbff;
+                            transition: 0.5s;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

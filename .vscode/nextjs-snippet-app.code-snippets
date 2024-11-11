@@ -1,0 +1,19 @@
+{
+	"Next.js App": {
+	  "prefix": "snapp",
+	  "body": [
+		"import '...';",
+		"",
+		"function MyApp({ Component, pageProps }) {",
+		"  return (",
+		"    <>",
+		"      <Component {...pageProps} />",
+		"    </>",
+		"  );",
+		"}",
+		"",
+		"export default MyApp;"
+	  ],
+	  "description": "Next.js custom App file"
+	}
+  }  

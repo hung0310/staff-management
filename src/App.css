@@ -1,0 +1,83 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+:root {
+  --color-submain: #293749;
+  --color-main: #FFC017;
+  --color-title: #0F2239;
+  --color-admin-bg: #171821;
+  --color-admin-items: #21222D;
+  --color-main-sub: #11519b;
+  --color-behind: #8cb0d4;
+  --color-sub: #ffbb00;
+  --color-second: #8f8645;
+  --color-third: #672c2c;
+  --color-red-youtube: red;
+  --white-color: #333;
+  --black-color: #1a1a1a;
+  --red-color: red;
+  --yellow-color: var(--color-sub);
+  --green-color: green;
+  --background-color-gray-box: #f7f7f7;
+  --color-title-gray: #222;
+  --color-title-white: #F7F7F7;
+  --color-fb-blue: #1877f2;
+  --cui-pagination-active-bg:var(--color-main);
+  --cui-pagination-active-border-color: var(--color-main);
+  --cui-pagination-color: #4f5d73;
+  --cui-pagination-hover-color: var(--color-main);
+  --font-family: 'Roboto', sans-serif
+
+  /* -------------color icon background page------------- */
+  --color-ico: #9176FF;
+  --dark-color: #2b2b2b;
+  --dark-icon-color: #fff;
+  --light-color: #f7f7f7;
+  --light-icon-color: #FFDE59;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;     
+}
+
+body {
+  font-family: Roboto, sans-serif !important;
+}

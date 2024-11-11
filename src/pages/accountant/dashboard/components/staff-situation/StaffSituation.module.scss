@@ -1,0 +1,125 @@
+.request_staff {
+    margin-top: 50px;
+    .request_staff_wrapper {
+        .subtitle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h3 {
+                font-weight: 500;
+                color: #344767;
+            }
+
+            .btn_add_staff {
+                background-color: #2B85EC;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                color: #fff;
+                transition: 0.2s;
+
+                &:hover {
+                    background-color: #5ca1f0;
+                    transition: 0.2s;
+                }
+
+                svg {
+                    color: #fff;
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+        }
+
+        .table {
+            .table_info {
+                overflow-x: auto;
+                .custom_table {
+                    margin-top: 26px;
+                    width: 200%;
+                    table-layout: fixed;
+                    border-collapse: collapse;
+                    white-space: nowrap;
+
+                    thead {
+                        width: 100%;
+                        tr {
+                            width: auto;
+                            text-align: left;
+
+                            th { 
+                                padding: 10px 15px;
+                                &.id_tb { min-width: 80px; }
+                                &.item_tb { min-width: 150px; }
+                                &.name_tb { min-width: 150px; }
+                                &.date_tb { min-width: 150px; }
+                                &.day_tb { min-width: 80px; }
+                                &.hour_tb { min-width: 80px; }
+                                &.day_off_tb { min-width: 80px; }
+                                &.total_tb { min-width: 100px; }
+                                &.status { min-width: 150px; }
+                                &.evalute_tb { min-width: 100px; }
+                                &.note_tb { min-width: 300px; }
+                            }
+
+                            span {
+                                color: #7c7373;
+                                font-size: 12px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+                        }
+                    }
+
+                    tbody {
+                        width: 100%;
+
+                        tr {
+                            // &:hover {
+                            //     background-color: #ebebeb;
+                            // }
+
+                            td {
+                                width: auto;
+                                padding: 20px 0;
+                                border-bottom: 0.0625rem solid #f0f2f5;
+    
+                                span {
+                                    color: #7c7373;
+                                    font-size: 14px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+    
+                                    a {
+                                        svg {
+                                            width: 18px;
+                                            height: 18px;
+                                        }
+                                    }
+    
+                                    svg {
+                                        width: 18px;
+                                        height: 18px;
+                                    }
+                                }
+    
+                                textarea {
+                                    width: 300px;
+                                    padding: 10px;
+                                    color: #7c7373;
+                                    border-radius: 3px;
+                                    border: 1px solid #7c7373;
+                                    outline: #7c7373;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

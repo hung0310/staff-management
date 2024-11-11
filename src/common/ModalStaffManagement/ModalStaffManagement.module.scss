@@ -1,0 +1,74 @@
+.title {
+    color: #293749;
+    h4 {
+        margin-bottom: 0;
+    }
+}
+
+.body_modal {
+    padding: 0 20px 10px;
+
+    .field_form {
+
+        .space_center {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .location {
+
+            }
+
+            .date_container {
+                display: flex;
+                flex-direction: column;
+
+                .date_picker {
+                    position: relative;
+                    transform: translateY(5px);
+
+                    input {
+                        padding: 5px 35px 5px 10px;
+                        border: 1px solid #dee2e6;
+                        border-radius: 5px;
+                        font-size: 15px;
+                        outline: none;
+                        cursor: pointer;
+                        height: 37px;
+                    }
+                    svg {
+                        position: absolute;
+                        right: 10px;
+                        top: 40%;
+                        transform: translateY(-50%);
+                        width: 18px;
+                        height: 18px;
+                        color: #293749;
+                        pointer-events: none;
+                    }
+                }
+            }
+        }
+
+        .error_message {
+            display: inline-block;
+            animation: slideInFromLeft 1.5s ease-in-out;
+        }
+        
+        @keyframes slideInFromLeft {
+            0% {
+                transform: translateX(0%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    }
+
+    .btn_submit {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

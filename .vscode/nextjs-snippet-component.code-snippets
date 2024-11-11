@@ -1,0 +1,20 @@
+{
+    "React Component": {
+        "prefix": "sncpn",
+        "body": [
+            "import React from 'react';",
+            "import Image from 'next/image';",
+            "import styles from '...';",
+            "",
+            "const $TM_FILENAME_BASE = () => {",
+            "",
+            "    return (",
+            "        ",
+            "    );",
+            "};",
+            "",
+            "export default $TM_FILENAME_BASE;"
+        ],
+        "description": "Create a React component with Next.js Image and CSS module"
+    }
+}

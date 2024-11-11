@@ -1,0 +1,155 @@
+
+
+.request_staff {
+    margin-top: 50px;
+    .request_staff_wrapper {
+        .subtitle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h3 {
+                font-weight: 500;
+                color: #344767;
+            }
+
+            .btn_add_staff {
+                background-color: #2B85EC;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                color: #fff;
+                transition: 0.2s;
+
+                &:hover {
+                    background-color: #5ca1f0;
+                    transition: 0.2s;
+                }
+
+                svg {
+                    color: #fff;
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+        }
+
+        .table {
+            .table_info {
+                .custom_table {
+                    margin-top: 26px;
+                    width: 100%;
+                    table-layout: fixed;
+                    border-collapse: collapse;
+
+                    thead {
+                        width: 100%;
+                        tr {
+                            width: 100%;
+                            padding: 0 20px;
+
+                            span {
+                                color: #7c7373;
+                                font-size: 12px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .id_tb {
+                                width: 15%;
+                            }
+
+                            .item_tb {
+                                width: 18%;
+                            }
+
+                            .name_tb {
+                                width: 30%;
+                            }
+
+                            .date_tb {
+                                width: 10%;
+                            }
+
+                            .from_tb {
+                                width: 18%;
+                            }
+
+                            .action_tb {
+                                width: 9%;
+                            }
+                        }
+                    }
+
+                    tbody {
+                        width: 100%;
+
+                        tr {
+                            &:hover {
+                                background-color: #ebebeb;
+                            }
+
+                            td {
+                                width: 100%;
+                                padding: 20px;
+                                border-bottom: 0.0625rem solid #f0f2f5;
+    
+                                span {
+                                    color: #7c7373;
+                                    font-size: 14px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+    
+                                    a {
+                                        svg {
+                                            width: 18px;
+                                            height: 18px;
+                                        }
+                                    }
+    
+                                    svg {
+                                        width: 18px;
+                                        height: 18px;
+                                    }
+                                }
+    
+                                .custom_btn {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    gap: 10px;
+    
+                                    .edit {
+                                        svg {
+                                            width: 16px;
+                                            height: 16px;
+                                            cursor: pointer;
+                                            color: #2B85EC;
+                                        }
+                                    }
+    
+                                    .delete {
+                                        svg {
+                                            width: 16px;
+                                            height: 16px;
+                                            cursor: pointer;
+                                            color: #ec652b;
+                                        }
+                                    }                                
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .paginnate {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

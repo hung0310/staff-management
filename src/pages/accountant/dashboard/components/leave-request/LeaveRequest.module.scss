@@ -1,0 +1,125 @@
+
+
+.request_staff {
+    margin-top: 50px;
+    .request_staff_wrapper {
+        .subtitle {
+            h3 {
+                font-weight: 500;
+                color: #344767;
+            }
+        }
+
+        .table {
+            .table_info {
+                .custom_table {
+                    margin-top: 26px;
+                    width: 100%;
+                    table-layout: fixed;
+                    border-collapse: collapse;
+
+                    thead {
+                        width: 100%;
+                        tr {
+                            width: 100%;
+                            padding: 0 20px;
+
+                            span {
+                                color: #7c7373;
+                                font-size: 12px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .id_tb {
+                                width: 15%;
+                            }
+
+                            .name_tb {
+                                width: 35%;
+                            }
+
+                            .type_tb {
+                                width: 25%;
+                            }
+
+                            .file_tb {
+                                width: 15%;
+                            }
+
+                            .action_tb {
+                                width: 10%;
+                            }
+                        }
+                    }
+
+                    tbody {
+                        width: 100%;
+
+                        tr {
+                            &:hover {
+                                background-color: #ebebeb;
+                            }
+
+                            td {
+                                width: 100%;
+                                padding: 20px;
+                                border-bottom: 0.0625rem solid #f0f2f5;
+    
+                                span {
+                                    color: #7c7373;
+                                    font-size: 14px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+    
+                                    a {
+                                        svg {
+                                            width: 18px;
+                                            height: 18px;
+                                        }
+                                    }
+    
+                                    svg {
+                                        width: 18px;
+                                        height: 18px;
+                                    }
+                                }
+    
+                                .custom_btn {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+    
+                                    .approve {
+                                        svg {
+                                            width: 16px;
+                                            height: 16px;
+                                            cursor: pointer;
+                                            color: #2B85EC;
+                                        }
+                                    }
+    
+                                    .denial {
+                                        svg {
+                                            width: 16px;
+                                            height: 16px;
+                                            cursor: pointer;
+                                            color: #ec652b;
+                                        }
+                                    }                                
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .paginnate {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

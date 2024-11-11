@@ -1,0 +1,18 @@
+
+
+.animation_lotie {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // width: 300px;
+    // height: 300px;
+
+    svg {
+        width: 300px !important;
+        height: 250px !important;
+    }
+
+    &.hide {
+        display: none;
+    }
+}
