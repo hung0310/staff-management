@@ -1,0 +1,10 @@
+{
+	"Snippet for ${}": {
+	  "prefix": "sn$",
+	  "body": [
+		"{`${styles.$0} `}"
+	  ],
+	  "description": "Inserts a ${} template"
+	}
+  }
+  

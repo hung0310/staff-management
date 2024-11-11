@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/staff-management/static/css/main.250f7d55.css",
+    "main.js": "/staff-management/static/js/main.de633a06.js",
+    "static/js/453.ee5296e6.chunk.js": "/staff-management/static/js/453.ee5296e6.chunk.js",
+    "static/media/background.avif": "/staff-management/static/media/background.ceefd27073c2562760dd.avif",
+    "static/media/group-manage.png": "/staff-management/static/media/group-manage.68c58528f82db089f650.png",
+    "index.html": "/staff-management/index.html",
+    "main.250f7d55.css.map": "/staff-management/static/css/main.250f7d55.css.map",
+    "main.de633a06.js.map": "/staff-management/static/js/main.de633a06.js.map",
+    "453.ee5296e6.chunk.js.map": "/staff-management/static/js/453.ee5296e6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.250f7d55.css",
+    "static/js/main.de633a06.js"
+  ]
+}

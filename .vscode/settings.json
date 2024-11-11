@@ -1,0 +1,10 @@
+{
+    "background.fullscreen": {
+        "images": ["file:///D:/Image/Screenshots/Background/background_vscode.png"],
+        "opacity": 0.91,
+        "size": "cover",
+        "position": "center",
+        "interval": 0
+    },
+    "background.enabled": true
+}
