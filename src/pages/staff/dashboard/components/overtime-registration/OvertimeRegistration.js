@@ -19,6 +19,8 @@ const loginSchemas = Yup.object().shape({
 
 const OvertimeRegistration = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedHourStart, setSelectedHourStart] = useState(new Date());
+    const [selectedHourEnd, setSelectedHourEnd] = useState(new Date());
     
     const handleSubmit = (values) => {
 
@@ -40,7 +42,7 @@ const OvertimeRegistration = () => {
                     validationSchema={loginSchemas}
                     onSubmit={handleSubmit}
                     >
-                    {({ isSubmitting, values, setSubmitting }) => (
+                    {({ isSubmitting, values, setFieldValue }) => (
                         <Form>
                             <div className={`${styles.field_form} `}>   
                                 <div className={`${styles.location} `}>
@@ -82,37 +84,43 @@ const OvertimeRegistration = () => {
                                     </div>
                                 </div>
 
-                                <div className={`${styles.space_center} `}>
-                                    <div className={`${styles.date_container} `} style={{ height: '90px'}}>
-                                        <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Bắt đầu từ:</span>
-                                        <div className={`${styles.date_picker}`} style={{paddingBottom: '10px'}}>
+                                <div className={`${styles.space_center}`}>
+                                    <div className={`${styles.date_container}`} style={{ height: '90px' }}>
+                                        <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }}>Bắt đầu từ:</span>
+                                        <div className={`${styles.date_picker}`} style={{ paddingBottom: '10px' }}>
                                             <DatePicker
-                                                name="hour_start"
-                                                onChange={(date) => setSelectedDate('')}
-                                                showTimeSelect
-                                                showTimeSelectOnly
-                                                timeCaption="Thời gian"
-                                                dateFormat="HH:mm"
-                                                placeholderText="Chọn giờ bắt đầu"
+                                            name="hour_start"
+                                            selected={values.hour_start}
+                                            onChange={(time) => {
+                                                setSelectedHourStart(time);
+                                                setFieldValue('hour_start', time);
+                                            }}
+                                            showTimeSelect
+                                            showTimeSelectOnly
+                                            timeCaption="Thời gian"
+                                            dateFormat="HH:mm"
+                                            placeholderText="Chọn giờ bắt đầu"
                                             />
-                                            <FontAwesomeIcon icon={faCalendarCheck} />
                                         </div>
                                         <ErrorMessage name="hour_start" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
                                     </div>
 
-                                    <div className={`${styles.date_container} `} style={{ height: '90px'}}>
-                                        <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Kết thúc lúc:</span>
-                                        <div className={`${styles.date_picker}`} style={{paddingBottom: '10px'}}>
+                                    <div className={`${styles.date_container}`} style={{ height: '90px' }}>
+                                        <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }}>Kết thúc lúc:</span>
+                                        <div className={`${styles.date_picker}`} style={{ paddingBottom: '10px' }}>
                                             <DatePicker
-                                                name="hour_end"
-                                                onChange={(date) => setSelectedDate('')}
-                                                showTimeSelect
-                                                showTimeSelectOnly
-                                                timeCaption="Thời gian"
-                                                dateFormat="HH:mm"
-                                                placeholderText="Chọn giờ kết thúc"
+                                            name="hour_end"
+                                            selected={values.hour_end}
+                                            onChange={(time) => {
+                                                setSelectedHourEnd(time);
+                                                setFieldValue('hour_end', time);
+                                            }}
+                                            showTimeSelect
+                                            showTimeSelectOnly
+                                            timeCaption="Thời gian"
+                                            dateFormat="HH:mm"
+                                            placeholderText="Chọn giờ kết thúc"
                                             />
-                                            <FontAwesomeIcon icon={faCalendarCheck} />
                                         </div>
                                         <ErrorMessage name="hour_end" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
                                     </div>

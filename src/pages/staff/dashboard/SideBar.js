@@ -14,18 +14,21 @@ import {
     faAngleDown,
     faRightFromBracket,
     faClock,
-    faPaperPlane
+    faPaperPlane,
+    faCalendarCheck
 } from "@fortawesome/free-solid-svg-icons";
 
 import styles from './SideBar.module.scss';
 import HomePage from './components/home-page/HomePage';
 import OvertimeRegistration from './components/overtime-registration/OvertimeRegistration';
 import LeaveApplication from './components/leave-application/LeaveApplication';
+import TimeKeeping from './components/time-keeping/TimeKeeping';
 
 const item_sidebar = [
     { id: 1, label: "Home Page", icon: faCubes, render_content: 'homepage' },
     { id: 2, label: "Overtime Registration", icon: faClock, render_content: 'overtime' },
     { id: 3, label: "Leave Application", icon: faPaperPlane, render_content: 'leave' },
+    { id: 4, label: "TimeKeeping", icon: faCalendarCheck, render_content: 'time_keeping' },
     // {
     //     id: 6,
     //     label: "...",
@@ -61,6 +64,8 @@ const Sidebar = () => {
                 return <OvertimeRegistration />;
             case 'leave':
                 return <LeaveApplication />;
+            case 'time_keeping':
+                return <TimeKeeping />;
             default:
                 return <HomePage />;
         }
