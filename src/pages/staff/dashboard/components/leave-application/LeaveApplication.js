@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './LeaveApplication.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faCloudArrowDown, faCloudArrowUp, faFileLines } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faCloudArrowDown, faCloudArrowUp, faFileLines, faX } from '@fortawesome/free-solid-svg-icons';
 
 const LeaveApplication = () => {
     const [selectedFile, setSelectedFile] = useState(null);
+    const fileInputRef = useRef(null);
 
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
@@ -18,6 +19,11 @@ const LeaveApplication = () => {
         link.href = fileUrl;
         link.download = 'mau_don_xin_phep.doc';
         link.click();
+    }
+
+    const handleRemoveFile = () => {
+        setSelectedFile(null);
+        fileInputRef.current.value = null; 
     }
 
     return (
@@ -37,7 +43,7 @@ const LeaveApplication = () => {
                                     {selectedFile.name}
                                 </span>
                             </div>
-                            {selectedFile && <FontAwesomeIcon icon={faCheck} />}
+                            <FontAwesomeIcon icon={faX} className={`${styles.cus_ico} `} onClick={handleRemoveFile}/>
                         </div>
                     :
                         <span>Browser File To Upload</span>
@@ -46,13 +52,25 @@ const LeaveApplication = () => {
                     <div className={`${styles.upload_cloud}`} onClick={() => document.getElementById('file-upload').click()}>
                         <FontAwesomeIcon icon={faCloudArrowUp} />
                         <input
+                            ref={fileInputRef}
                             id="file-upload"
                             type="file"
                             className={styles.hidden_input}
                             onChange={handleFileUpload}
+                            accept=".doc"
                         />
                     </div>
                 </div>
+
+                {selectedFile ?
+                    <div className={`${styles.custom_btn} mt-4`}>
+                        <button>
+                            Xác nhận
+                        </button>
+                    </div>
+                :
+                    <></>
+                }
             </div>
         </div>
     );
