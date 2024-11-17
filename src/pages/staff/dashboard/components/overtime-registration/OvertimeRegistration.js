@@ -13,14 +13,14 @@ const loginSchemas = Yup.object().shape({
     name: Yup.string().required('⚠ Please enter your name'),
     item: Yup.string().required('⚠ Please enter your department'),
     day: Yup.string().required('⚠ Please enter day'),
-    hour_start: Yup.string().required('⚠ Please enter hour start'),
-    hour_end: Yup.string().required('⚠ Please enter hour end'),
+    // hour_start: Yup.string().required('⚠ Please enter hour start'),
+    // hour_end: Yup.string().required('⚠ Please enter hour end'),
 });
 
 const OvertimeRegistration = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [selectedHourStart, setSelectedHourStart] = useState(new Date());
-    const [selectedHourEnd, setSelectedHourEnd] = useState(new Date());
+    // const [selectedHourStart, setSelectedHourStart] = useState(new Date());
+    // const [selectedHourEnd, setSelectedHourEnd] = useState(new Date());
     
     const handleSubmit = (values) => {
 
@@ -35,8 +35,8 @@ const OvertimeRegistration = () => {
                         name: '',
                         item: '',
                         day: '',
-                        hour_start: '',
-                        hour_end: '',
+                        // hour_start: '',
+                        // hour_end: '',
                         note: '',
                     }}
                     validationSchema={loginSchemas}
@@ -84,7 +84,7 @@ const OvertimeRegistration = () => {
                                     </div>
                                 </div>
 
-                                <div className={`${styles.space_center}`}>
+                                {/* <div className={`${styles.space_center}`}>
                                     <div className={`${styles.date_container}`} style={{ height: '90px' }}>
                                         <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }}>Bắt đầu từ:</span>
                                         <div className={`${styles.date_picker}`} style={{ paddingBottom: '10px' }}>
@@ -124,7 +124,7 @@ const OvertimeRegistration = () => {
                                         </div>
                                         <ErrorMessage name="hour_end" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className={`${styles.textarea_custom} `} style={{ height: '90px'}}>
                                     <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Ghi chú:</span>

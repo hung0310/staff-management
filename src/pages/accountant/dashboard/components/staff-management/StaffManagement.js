@@ -10,11 +10,11 @@ import ModalStaffManagement from '../../../../../common/ModalStaffManagement/Mod
 import ModalDelete from '../../../../../common/ModalDelete/ModalDelete';
 
 const mockDatas = [
-    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', date: '26/10/2024', from: 'Hà Nội'},
-    {em_id: '#EMP : 00002', em_item: 'Hành chính, nhân sự', em_name: 'Nguyễn Văn B', date: '26/10/2024', from: 'Hà Nội'},
-    {em_id: '#EMP : 00003', em_item: 'Tài chính, kế toán', em_name: 'Nguyễn Văn C', date: '26/10/2024', from: 'Đà Nẵng'},
-    {em_id: '#EMP : 00004', em_item: 'Sale', em_name: 'Nguyễn Văn D', date: '26/10/2024', from: 'Đà Nẵng'},
-    {em_id: '#EMP : 00005', em_item: 'Kỹ Thuật, sản xuất', em_name: 'Nguyễn Văn E', date: '26/10/2024', from: 'Thành phố Hồ Chí Minh'},
+    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', phone_number: '0868155371', from: 'Hà Nội', email: 'nth0626zz@gmail.com', date: '26/10/2024'},
+    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', phone_number: '0868155371', from: 'Hà Nội', email: 'nth0626zz@gmail.com', date: '26/10/2024'},
+    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', phone_number: '0868155371', from: 'Hà Nội', email: 'nth0626zz@gmail.com', date: '26/10/2024'},
+    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', phone_number: '0868155371', from: 'Hà Nội', email: 'nth0626zz@gmail.com', date: '26/10/2024'},
+    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', phone_number: '0868155371', from: 'Bà Rịa Vũng Tàu', email: 'nth0626zz@gmail.com', date: '26/10/2024'},
 ]
 
 const StaffManagement = () => {
@@ -60,31 +60,43 @@ const StaffManagement = () => {
                                 <tr>
                                     <th className={`${styles.id_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>EMPLOYEE ID</span>
+                                            <span>MSNV</span>
                                         </div>
                                     </th>
 
                                     <th className={`${styles.item_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>ITEM</span>
+                                            <span>BỘ PHẬN LÀM VIỆC</span>
                                         </div>
                                     </th>
 
                                     <th className={`${styles.name_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>EMPLOYEE NAME</span>
+                                            <span>TÊN NHÂN VIÊN</span>
                                         </div>
                                     </th>
 
-                                    <th className={`${styles.date_tb} `}>
+                                    <th className={`${styles.number_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>DATE START</span>
+                                            <span>SỐ ĐIỆN THOẠI</span>
                                         </div>
                                     </th>
 
                                     <th className={`${styles.from_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>FROM</span>
+                                            <span>QUÊ QUÁN</span>
+                                        </div>
+                                    </th>
+
+                                    <th className={`${styles.email_tb} `}>
+                                        <div className={`${styles.title} `}>
+                                            <span>EMAIL</span>
+                                        </div>
+                                    </th>
+
+                                    <th className={`${styles.date_tb} `}>
+                                        <div className={`${styles.title} `}>
+                                            <span>NGÀY BẮT ĐẦU</span>
                                         </div>
                                     </th>
 
@@ -103,20 +115,33 @@ const StaffManagement = () => {
                                         <tbody key={index}>
                                             <tr>
                                                 <td>
-                                                    <span style={{ color: '#F19828', fontWeight: '500' }}>{item.em_id}</span>
+                                                    <span style={{ color: '#F19828', fontWeight: '500', fontSize: '12px' }}>{item.em_id}</span>
                                                 </td>
+
                                                 <td>
                                                     <span>{item.em_item}</span>
                                                 </td>
+
                                                 <td>
                                                     <span>{item.em_name}</span>
                                                 </td>
+
                                                 <td>
-                                                    <span>{item.date}</span>
+                                                    <span>{item.phone_number}</span>
                                                 </td>
+
                                                 <td>
                                                     <span>{item.from}</span>
                                                 </td>
+
+                                                <td>
+                                                    <span>{item.email}</span>
+                                                </td>
+
+                                                <td>
+                                                    <span>{item.date}</span>
+                                                </td>
+
                                                 <td>
                                                     <div className={`${styles.custom_btn} `}>
                                                         <span className={`${styles.edit} `}>

@@ -7,35 +7,92 @@
     align-items: center;
 
     .leave_application_container {
-        margin-top: 50px;
+        margin: 50px 0;
         display: flex;
         flex-direction: column;
+        width: 500px;
+        .field_form {
+            .space_center {
+                display: flex;
+                gap: 20px;
+                justify-content: space-between;
+                align-items: center;
 
-        .download {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            svg {
-                width: 150px;
-                height: 150px;
-                color: #39393F;
-                cursor: pointer;
+                .location {
+                    width: 100%;
+                }
+
+                .date_container {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+
+                    .date_picker {
+                        position: relative;
+                        transform: translateY(5px);
+
+                        input {
+                            padding: 5px 55px 5px 10px;
+                            border: 1px solid #dee2e6;
+                            border-radius: 5px;
+                            font-size: 15px;
+                            outline: none;
+                            cursor: pointer;
+                            height: 37px;
+                            width: 100%;
+                        }
+                        svg {
+                            position: absolute;
+                            right: 10px;
+                            top: 40%;
+                            transform: translateY(-50%);
+                            width: 18px;
+                            height: 18px;
+                            color: #293749;
+                            pointer-events: none;
+                        }
+                    }
+                }
             }
-            span {
-                text-align: center;
+
+            .textarea_custom {
+                display: flex;
+                flex-direction: column;
+                
+                textarea {
+                    width: 100%;
+                    height: 500px;
+                    padding: 10px;
+                    outline: #dee2e6;
+                    border-radius: 3px;
+                }
             }
+
+            .error_message {
+                display: inline-block;
+                animation: slideInFromLeft 1.5s ease-in-out;
+            }
+            
+            @keyframes slideInFromLeft {
+                0% {
+                    transform: translateX(0%);
+                    opacity: 0;
+                }
+                100% {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }            
         }
 
         .upload {
-            margin-top: 80px;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             border-style: dashed;
             border-radius: 10px;
-            width: 580px;
+            width: 500px;
             height: 200px;
             padding: 20px;
             color: #5ca1f0;
@@ -45,7 +102,7 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                width: 60%;
+                width: 70%;
                 border: 1px solid #5ca1f0;
                 padding: 5px 10px;
                 border-radius: 5px;
@@ -59,12 +116,6 @@
                     span {
                         font-size: 16px;
                     }
-                }
-
-                svg {
-                    transform: translateY(-3px);
-                    width: 14px;
-                    height: 14px;
                 }
 
                 .cus_ico {

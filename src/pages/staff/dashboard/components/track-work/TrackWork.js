@@ -109,7 +109,7 @@ const TrackWork = () => {
             <div className={`${styles.timesheet_container} `}>
                 <div className={`${styles.header_timesheet} `}>
                     <div className={`${styles.info_employ} `}>
-                        <span><strong>Tên nhân viên: </strong>Lê Lý Thị Sầu</span>
+                        <span><strong>Tên nhân viên: </strong>Nguyễn Văn A</span>
                         <span><strong>Bộ phận nhân sự: </strong>Chuyên viên tư vấn</span>
                     </div>
 

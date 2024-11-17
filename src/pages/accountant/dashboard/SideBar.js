@@ -5,10 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import {
     faCubes,
-    faFileCirclePlus,
     faHouse,
     faCircleUser,
-    faGear,
     faBell,
     faBars,
     faAngleDown,
@@ -16,7 +14,8 @@ import {
     faUserGear,
     faMoneyCheckDollar,
     faUsers,
-    faRightFromBracket
+    faRightFromBracket,
+    faMagnifyingGlass
 } from "@fortawesome/free-solid-svg-icons";
 
 import styles from './SideBar.module.scss';
@@ -203,6 +202,16 @@ const Sidebar = () => {
                             </div>
 
                             <div className={`${styles.function_nav}`}>
+                                <div className={`${styles.search_tab} d-flex`}>
+                                    <input
+                                        className={`${styles.input_search}`}
+                                        placeholder='Tìm kiếm ...'
+                                        type='text'
+                                    />
+                                    <div className={`${styles.look_up} `}>
+                                        <FontAwesomeIcon icon={faMagnifyingGlass} width={16} height={16}/>
+                                    </div>
+                                </div>
                                 <div className={`${styles.custom_ico}`}>
                                     <FontAwesomeIcon icon={faBell} />
                                     <FontAwesomeIcon ref={buttonRef} icon={faBars} className={`${styles.ico_bars}`} onClick={handleShow} />

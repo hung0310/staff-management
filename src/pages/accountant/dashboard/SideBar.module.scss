@@ -235,6 +235,32 @@ $tablet-width: 768px;
         
                     .function_nav {
                         display: flex;
+
+                        .search_tab {
+                            margin-right: 30px;
+                            .input_search {
+                                flex-grow: 1; 
+                                padding-right: 60px; 
+                                border-radius: 6px;
+                                border: 1px solid #9FAAB7;
+                                padding-left: 10px;
+                                height: 44px;
+                    
+                                &::placeholder {
+                                    color: #9FAAB7;
+                                }
+                    
+                                &:focus {
+                                    outline: none;
+                                }
+                            }
+
+                            .look_up {
+                                margin-left: -40px;
+                                padding: 10px;
+                                cursor: pointer;
+                            }
+                        }
         
                         input {
                             padding: 0px 8px;

@@ -22,7 +22,6 @@
                         width: 100%;
                         tr {
                             width: 100%;
-                            padding: 0 20px;
 
                             span {
                                 color: #7c7373;
@@ -33,23 +32,31 @@
                             }
 
                             .id_tb {
-                                width: 15%;
+                                width: 10%;
+                            }
+
+                            .depart_tb {
+                                width: 18%;
                             }
 
                             .name_tb {
-                                width: 35%;
+                                width: 18%;
                             }
 
-                            .type_tb {
-                                width: 25%;
+                            .time_tb {
+                                width: 16%;
+                            }
+
+                            .note_tb {
+                                width: 20%;
                             }
 
                             .file_tb {
-                                width: 15%;
+                                width: 9%;
                             }
 
                             .action_tb {
-                                width: 10%;
+                                width: 9%;
                             }
                         }
                     }

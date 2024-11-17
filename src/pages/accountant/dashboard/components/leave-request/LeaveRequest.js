@@ -8,11 +8,11 @@ import NoResult from '../../../../../common/NoResult/NoResult';
 import { useReactPaginate } from '../../../../../common/Pagination/useReactPaginate';
 
 const mockDatas = [
-    {em_id: '#EMP : 00001', em_name: 'Nguyễn Văn A', leave_type: 'Xin nghỉ phép'},
-    {em_id: '#EMP : 00002', em_name: 'Nguyễn Văn B', leave_type: 'Xin nghỉ phép'},
-    {em_id: '#EMP : 00003', em_name: 'Nguyễn Văn C', leave_type: 'Làm thêm giờ'},
-    {em_id: '#EMP : 00004', em_name: 'Nguyễn Văn D', leave_type: 'Làm thêm giờ'},
-    {em_id: '#EMP : 00005', em_name: 'Nguyễn Văn E', leave_type: 'Làm thêm giờ'},
+    {em_id: '00001', depart_em: 'Chuyên viên tư vấn', em_name: 'Nguyễn Văn A', time_em: '17/11 - 18/11', note_em: 'Có việc đột xuất. Mong đơn được duyệt ạ!'},
+    {em_id: '00001', depart_em: 'Chuyên viên tư vấn', em_name: 'Nguyễn Văn A', time_em: '17/11 - 18/11', note_em: 'Có việc đột xuất. Mong đơn được duyệt ạ!'},
+    {em_id: '00001', depart_em: 'Chuyên viên tư vấn', em_name: 'Nguyễn Văn A', time_em: '17/11 - 18/11', note_em: 'Có việc đột xuất. Mong đơn được duyệt ạ!'},
+    {em_id: '00001', depart_em: 'Chuyên viên tư vấn', em_name: 'Nguyễn Văn A', time_em: '17/11 - 18/11', note_em: 'Có việc đột xuất. Mong đơn được duyệt ạ!'},
+    {em_id: '00001', depart_em: 'Chuyên viên tư vấn', em_name: 'Nguyễn Văn A', time_em: '17/11 - 18/11', note_em: 'Có việc đột xuất. Mong đơn được duyệt ạ!'},
 ]
 
 const LeaveRequest = () => {
@@ -35,31 +35,43 @@ const LeaveRequest = () => {
                                 <tr>
                                     <th className={`${styles.id_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>EMPLOYEE ID</span>
+                                            <span>MSNV</span>
+                                        </div>
+                                    </th>
+
+                                    <th className={`${styles.depart_tb} `}>
+                                        <div className={`${styles.title} `}>
+                                            <span>BỘ PHẬN LÀM VIỆC</span>
                                         </div>
                                     </th>
 
                                     <th className={`${styles.name_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>EMPLOYEE NAME</span>
+                                            <span>TÊN NHÂN VIÊN</span>
                                         </div>
                                     </th>
 
-                                    <th className={`${styles.type_tb} `}>
+                                    <th className={`${styles.time_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>LEAVE TYPE</span>
+                                            <span>THỜI GIAN NGHỈ PHÉP</span>
+                                        </div>
+                                    </th>
+
+                                    <th className={`${styles.note_tb} `}>
+                                        <div className={`${styles.title} `}>
+                                            <span>GHI CHÚ</span>
                                         </div>
                                     </th>
 
                                     <th className={`${styles.file_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>LEAVE APPLICATION</span>
+                                            <span>MINH CHỨNG</span>
                                         </div>
                                     </th>
 
                                     <th className={`${styles.action_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>ACTION</span>
+                                            <span>TÙY CHỌN</span>
                                         </div>
                                     </th>
                                 </tr>
@@ -72,17 +84,31 @@ const LeaveRequest = () => {
                                         <tbody key={index}>
                                             <tr>
                                                 <td>
-                                                    <span style={{ color: '#F19828', fontWeight: '500' }}>{item.em_id}</span>
+                                                    <span style={{ color: '#F19828', fontWeight: '500', fontSize: '12px' }}>{item.em_id}</span>
                                                 </td>
+
+                                                <td>
+                                                    <span>{item.depart_em}</span>
+                                                </td>
+
                                                 <td>
                                                     <span>{item.em_name}</span>
                                                 </td>
+
                                                 <td>
-                                                    <span>{item.leave_type}</span>
+                                                    <span>{item.time_em}</span>
                                                 </td>
+
+                                                <td>
+                                                    <span>{item.note_em}</span>
+                                                </td>
+
                                                 <td>
                                                     <span>
-                                                        {
+                                                        <a href='/demo_xin_phep.pdf' target='_blank'>
+                                                            <FontAwesomeIcon icon={faFileLines}/>
+                                                        </a>
+                                                        {/* {
                                                             item.leave_type === 'Xin nghỉ phép'
                                                         ?
                                                             <a href='/demo_xin_phep.pdf' target='_blank'>
@@ -90,7 +116,7 @@ const LeaveRequest = () => {
                                                             </a>
                                                         :
                                                             <FontAwesomeIcon icon={faClock} />
-                                                        }
+                                                        } */}
                                                     </span>
                                                 </td>
                                                 <td>
