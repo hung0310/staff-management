@@ -3,6 +3,7 @@ import Logo from '../../../assets/images/dashboard/group-manage.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import {
     faCubes,
     faFileCirclePlus,
@@ -134,6 +135,8 @@ const Sidebar = () => {
     }, [isShow]);
 
     const handleLogout = () => {
+        Cookies.set('accessToken', '');
+        Cookies.set('refreshToken', '');
         navigate('/');
     }
 

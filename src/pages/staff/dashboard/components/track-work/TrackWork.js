@@ -9,6 +9,8 @@ const TrackWork = () => {
     const [timeOutMorning, setTimeOutMorning] = useState('');
     const [timeInAfternoon, setTimeInAfternoon] = useState('');
     const [timeOutAfternoon, setTimeOutAfternoon] = useState('');
+    const [timeInOvertime, setTimeInOvertime] = useState('');
+    const [timeOutOvertime, setTimeOutOvertime] = useState('');
     const [countOutDay, setCountOutDay] = useState(0);
     const [dateNow, setDateNow] = useState('');
     const [statusButton, setStatusButton] = useState(false);
@@ -23,13 +25,22 @@ const TrackWork = () => {
         // }
         if(totalMinitues >= (50) && totalMinitues <= (55)) {
             const currentTime = `${hour}:${minitue} AM`;
-            setTimeInMorning(currentTime); 
-            console.log(">Hello", currentTime);           
+            setTimeInMorning(currentTime);      
         }
 
         if(totalMinitues >= (13 * 60 + 30) && totalMinitues <= (13 * 60 + 45)) {
             const currentTime = `${hour}:${minitue} PM`;
             setTimeInAfternoon(currentTime);            
+        }
+
+        if(totalMinitues >= (18 * 60)) {
+            const currentTime = `${hour}:${minitue} PM`;
+            setTimeInOvertime(currentTime);            
+        }
+
+        if(totalMinitues <= (23 * 60)) {
+            const currentTime = `${hour}:${minitue} PM`;
+            setTimeOutOvertime(currentTime);            
         }
 
         if(countOutDay <= 2) {
@@ -69,6 +80,7 @@ const TrackWork = () => {
         const date = new Date();
         // const currentTime = date.getHours() <= 12 ? `${date.getHours()}:${date.getMinutes()} AM` : `${date.getHours()}:${date.getMinutes()} PM`;
         SetTime(date.getHours(), date.getMinutes());
+        // alert(">>>"+`${date.getHours()}:${date.getMinutes()} PM`);
     }
 
     useEffect(() => {
@@ -83,9 +95,11 @@ const TrackWork = () => {
             const totalMinutes = date.getHours() * 60 + date.getMinutes();
             if (
                 (totalMinutes >= 8 * 60 && totalMinutes <= 8 * 60 + 15) ||
-                (totalMinutes >= 50 && totalMinutes <= 55) ||
+                // (totalMinutes >= 50 && totalMinutes <= 55) ||
                 (totalMinutes >= 11 * 60 + 30 && totalMinutes <= 12 * 60) ||
-                (totalMinutes >= 17 * 60 && totalMinutes <= 17 * 60 + 30)
+                (totalMinutes >= 13 * 60 + 30 && totalMinutes <= 13 * 60 + 45) ||
+                (totalMinutes >= 17 * 60 && totalMinutes <= 17 * 60 + 30) ||
+                (totalMinutes >= 18 * 60 && totalMinutes <= 23 * 60)
             ) {
                 setStatusButton(false);
             } else {
@@ -236,7 +250,7 @@ const TrackWork = () => {
                             <tbody>
                                 <tr 
                                     style={{
-                                        backgroundColor: dateNow === '17/11' ? '#d8d7d7' : ''
+                                        backgroundColor: dateNow === '20/11' ? '#d8d7d7' : ''
                                     }}
                                 >
                                     <td>
@@ -249,19 +263,19 @@ const TrackWork = () => {
                                         <span>{timeInMorning !== '' ? timeInMorning : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
-                                        <span>{timeOutMorning !== '' ? timeInMorning : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                        <span>{timeOutMorning !== '' ? timeOutMorning : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
-                                        <span>{timeInAfternoon !== '' ? timeInMorning : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                        <span>{timeInAfternoon !== '' ? timeInAfternoon : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
-                                        <span>{timeOutAfternoon !== '' ? timeInMorning : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                        <span>{timeOutAfternoon !== '' ? timeOutAfternoon : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
-                                        <span></span>
+                                        <span>{timeInOvertime !== '' ? timeInOvertime : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
-                                        <span></span>
+                                        <span>{timeOutOvertime !== '' ? timeOutOvertime : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
                                         <span></span>

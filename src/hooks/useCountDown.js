@@ -14,8 +14,10 @@ export function useCountdown() {
 
             if (currentHour === 8 && currentMinute <= 15) {
                 timeRemainingInSeconds = (15 - currentMinute) * 60 - currentSecond;
-            } else if (currentHour === 12 && currentMinute >= 30 && currentMinute <= 45) {
+            } else if (currentHour === 13 && currentMinute >= 30 && currentMinute <= 45) {
                 timeRemainingInSeconds = (45 - currentMinute) * 60 - currentSecond;
+            } else if (currentHour === 0 && currentMinute >= 20 && currentMinute <= 40 ) {
+                timeRemainingInSeconds = (40 - currentMinute) * 60 - currentSecond;
             }
 
             if (timeRemainingInSeconds > 0) {

@@ -135,7 +135,7 @@ const LeaveApplication = () => {
                                         type="file"
                                         className={styles.hidden_input}
                                         onChange={handleFileUpload}
-                                        accept=".doc"
+                                        // accept=".doc" 
                                     />
                                 </div>
                             </div>

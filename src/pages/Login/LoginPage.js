@@ -4,6 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styles from './LoginPage.module.scss';
 import { UseToast } from '../../hooks/ToastProvider';
+import Cookies from 'js-cookie';
+import { OAuth_Login } from '../../apis/staffAPI';
 
 const loginSchemas = Yup.object().shape({
     username: Yup.string().required('⚠ Please enter your username'),
@@ -23,26 +25,30 @@ const LoginPage = () => {
     };
 
     const handleSubmit = async (values, { setSubmitting }) => {
-        if(values.username === 'hello' && values.password === 'hello') {
-            showToast("Login successfully!", "success");
-            navigate('/accountant/dashboard');
-            return;
-        } 
-        if (values.username === 'bye' && values.password === 'bye') {
-            showToast("Login successfully!", "success");
-            navigate('/staff/dashboard');
-            return;
-        } 
-        showToast("Failed to sign in. Please try again later!", "error");
-        setSubmitting(false);
-        // try {
-
-        // } catch (error) {
-        //     console.error("Login error:", error);
-
-        // } finally {
-        //     setSubmitting(false);
-        // }
+        try {
+            const rsp = await OAuth_Login(values.username, values.password);
+            console.log(rsp);
+            if(rsp.status === 200) {
+                if(rsp.data.groups[0] === 'manager_group') {
+                    Cookies.set('accessToken', rsp.data.access);
+                    Cookies.set('refreshToken', rsp.data.refresh);
+                    showToast("Đăng nhập thành công!", "success");
+                    navigate('/accountant/dashboard');
+                    return;
+                }
+                if(rsp.data.groups[0] === 'employee_group') {
+                    Cookies.set('accessToken', rsp.data.access);
+                    Cookies.set('refreshToken', rsp.data.refresh);
+                    showToast("Đăng nhập thành công!", "success");
+                    navigate('/staff/dashboard');
+                    return;
+                }
+                setSubmitting(false);
+            } else 
+                showToast("Đăng nhập thất bại!", "error");
+        } catch(error) {
+            showToast("ERROR", "error");
+        }
     };
 
     return (
