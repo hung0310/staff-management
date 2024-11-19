@@ -27,7 +27,6 @@ const LoginPage = () => {
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             const rsp = await OAuth_Login(values.username, values.password);
-            console.log(rsp);
             if(rsp.status === 200) {
                 if(rsp.data.groups[0] === 'manager_group') {
                     Cookies.set('accessToken', rsp.data.access);
@@ -44,10 +43,9 @@ const LoginPage = () => {
                     return;
                 }
                 setSubmitting(false);
-            } else 
-                showToast("Đăng nhập thất bại!", "error");
+            }
         } catch(error) {
-            showToast("ERROR", "error");
+            showToast("Đăng nhập thất bại!", "error");
         }
     };
 
