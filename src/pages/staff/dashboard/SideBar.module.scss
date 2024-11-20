@@ -82,6 +82,47 @@ $tablet-width: 768px;
                 transform: translateX(0);
             }
         }
+
+        &.no_expand {
+            grid-template-columns: 6rem 1fr;
+            .nav_menu {
+                width: 6rem;
+                transition: width 0.8s ease;
+            
+                .logo {
+                    transition: all 0.8s ease;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+            
+                    .content_logo {
+                        display: none;
+                    }
+            
+                    svg {
+                        transform: rotate(0deg);
+                        transition: transform 0.8s ease;
+                    }
+                }
+            
+                a {
+                    height: 3.5rem;
+                    transition: height 0.8s ease;
+            
+                    .main_a {
+                        .cus_multi {
+                            svg {
+                                transform: translateX(5px);
+                                transition: transform 0.8s ease;
+                            }
+                            span {
+                                display: none;
+                            }
+                        }
+                    }
+                }                
+            }
+        }
     
         .nav_menu {
             display: flex;
@@ -98,27 +139,39 @@ $tablet-width: 768px;
     
             .logo {
                 display: flex;
+                justify-content: space-between;
                 
-                img {
-                    display: block;
-                    width: 100%;
-                    object-fit: cover;
-                    width: 4rem;
-                    height: 4rem;
-                }   
-                
-                span {
-                    margin-top: 16px;
-                    margin-left: 10px;
-                    font-size: 16px;
-                    font-weight: 500;
+                .content_logo {
+                    display: flex;
+                    img {
+                        display: block;
+                        width: 100%;
+                        object-fit: cover;
+                        width: 4rem;
+                        height: 4rem;
+                    }   
                     
-                    color: #fff;
+                    span {
+                        margin-top: 16px;
+                        margin-left: 10px;
+                        font-size: 16px;
+                        font-weight: 500;
+                        
+                        color: #fff;
 
-                    strong {
-                        font-size: 30px;
-                        font-weight: 600;
-                    }
+                        strong {
+                            font-size: 30px;
+                            font-weight: 600;
+                        }
+                    }                
+                }
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                    color: #fff;
+                    transform: rotate(180deg);
+                    cursor: pointer;
                 }
             }
     

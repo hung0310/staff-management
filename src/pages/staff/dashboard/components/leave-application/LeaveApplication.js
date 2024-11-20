@@ -4,19 +4,21 @@ import DatePicker from 'react-datepicker';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarCheck, faCheck, faCloudArrowDown, faCloudArrowUp, faFileLines, faX } from '@fortawesome/free-solid-svg-icons';
+import { UseToast } from '../../../../../hooks/ToastProvider';
+import { faCalendarCheck, faCloudArrowUp, faFileLines, faX } from '@fortawesome/free-solid-svg-icons';
+import { Send_Leave_Request } from '../../../../../apis/staffAPI';
 
 const loginSchemas = Yup.object().shape({
-    id_emp: Yup.string().required('⚠ Please enter your employee code'),
-    name: Yup.string().required('⚠ Please enter your name'),
-    item: Yup.string().required('⚠ Please enter your department'),
-    day: Yup.string().required('⚠ Please enter day'),
+    date_start: Yup.string().required('⚠ Vui lòng chọn ngày'),
+    date_end: Yup.string().required('⚠ Vui lòng chọn ngày'),
 });
 
 const LeaveApplication = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const fileInputRef = useRef(null);
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDateStart, setSelectedDateStart] = useState(new Date());
+    const [selectedDateEnd, setSelectedDateEnd] = useState(new Date());
+    const { showToast } = UseToast();
 
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
@@ -29,7 +31,19 @@ const LeaveApplication = () => {
     }
     
     const handleSubmit = (values) => {
+        try {
+            const formData = new FormData();
+            formData.append('from_date', values.date_start.split('T')[0]);
+            formData.append('to_date', values.date_end.split('T')[0]);
+            formData.append('attachments', selectedFile);
+            formData.append('note', values.note);
 
+            const result = Send_Leave_Request(formData);
+
+            showToast("Yêu cầu của bạn đã được gửi!", "success");
+        } catch(error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -37,10 +51,8 @@ const LeaveApplication = () => {
             <div className={`${styles.leave_application_container}`}>
                 <Formik
                     initialValues={{
-                        id_emp: '',
-                        name: '',
-                        item: '',
-                        day: '',
+                        date_start: '',
+                        date_end: '',
                         note: '',
                     }}
                     validationSchema={loginSchemas}
@@ -48,66 +60,49 @@ const LeaveApplication = () => {
                     >
                     {({ isSubmitting, values, setFieldValue }) => (
                         <Form>
-                            <div className={`${styles.field_form} mb-4`}>   
-
-                                <div className={`${styles.space_center} `}>
-                                    <div className={`${styles.location} `}>
-                                        <div className='' style={{ height: '90px'}}>
-                                            <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Mã số nhân viên ✱:</span>
-                                            <Field type="text" name="id_emp" placeholder="- - - - - -" className="form-control" />
-                                            <ErrorMessage name="id_emp" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
-                                        </div>
-                                    </div>
-                                    <div className={`${styles.location} `}>
-                                        <div className='' style={{ height: '90px'}}>
-                                            <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Bộ phận làm việc ✱:</span>
-                                            <Field type="text" name="item" placeholder="- - - - - -" className="form-control" />
-                                            <ErrorMessage name="item" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className='' style={{ height: '90px'}}>
-                                    <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Tên nhân viên ✱:</span>
-                                    <Field type="text" name="name" placeholder="- - - - - -" className="form-control" />
-                                    <ErrorMessage name="name" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
-                                </div>
+                            <div className={`${styles.field_form} mb-4`}>
 
                                 <div className={`${styles.space_center} `}>
                                     <div className={`${styles.date_container} `} style={{ height: '90px'}}>
                                         <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Nghỉ từ ngày ✱:</span>
                                         <div className={`${styles.date_picker}`} style={{paddingBottom: '10px'}}>
                                             <DatePicker
-                                                name="day"
-                                                selected={selectedDate}
-                                                onChange={(date) => setSelectedDate(date)}
+                                                name="date_start"
+                                                selected={selectedDateStart}
+                                                onChange={(date) => {
+                                                    setSelectedDateStart(date);
+                                                    setFieldValue("date_start", date ? date.toISOString() : "");
+                                                }}
                                                 dateFormat="dd/MM/yyyy"
                                                 placeholderText="Chọn ngày"
                                             />
                                             <FontAwesomeIcon icon={faCalendarCheck} />
                                         </div>
-                                        <ErrorMessage name="day" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
+                                        <ErrorMessage name="date_start" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
                                     </div>
 
                                     <div className={`${styles.date_container} `} style={{ height: '90px'}}>
                                         <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Đến ngày ✱:</span>
                                         <div className={`${styles.date_picker}`} style={{paddingBottom: '10px'}}>
                                             <DatePicker
-                                                name="day"
-                                                selected={selectedDate}
-                                                onChange={(date) => setSelectedDate(date)}
+                                                name="date_end"
+                                                selected={selectedDateEnd}
+                                                onChange={(date) => {
+                                                    setSelectedDateEnd(date);
+                                                    setFieldValue("date_end", date ? date.toISOString() : "");
+                                                }}
                                                 dateFormat="dd/MM/yyyy"
                                                 placeholderText="Chọn ngày"
                                             />
                                             <FontAwesomeIcon icon={faCalendarCheck} />
                                         </div>
-                                        <ErrorMessage name="day" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
+                                        <ErrorMessage name="date_end" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
                                     </div>
                                 </div>
 
-                                <div className={`${styles.textarea_custom} `} style={{ height: '90px'}}>
+                                <div className={`${styles.textarea_custom} `}>
                                     <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Ghi chú:</span>
-                                    <textarea></textarea>
+                                    <Field as="textarea" name="note" placeholder="- - - - - - -" className="form-control" style={{ height: '100px' }} />
                                 </div>
                             </div>
 

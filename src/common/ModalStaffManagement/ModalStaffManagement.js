@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import { parse } from "date-fns";
 import DatePicker from 'react-datepicker';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -8,19 +9,27 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
+import { UseToast } from '../../hooks/ToastProvider';
+import { Create_Account_Emp, Get_DropDown_Department, Get_DropDown_Position } from '../../apis/staffAPI';
 
 const loginSchemas = Yup.object().shape({
-    name: Yup.string().required('⚠ Please enter employee name'),
-    location: Yup.string().required('⚠ Please enter location'),
-    date: Yup.string().required('⚠ Please enter date of birth'),
-    department: Yup.string().required('⚠ Please enter employee department'),
-    username: Yup.string().required('⚠ Please enter username'),
-    password: Yup.string().required('⚠ Please enter password'),
+    name: Yup.string().required('⚠ Vui lòng nhập tên nhân viên'),
+    location: Yup.string().required('⚠ Vui lòng nhập địa chỉ'),
+    date: Yup.string().required('⚠ Vui lòng nhập ngày bắt đầu làm việc'),
+    email: Yup.string().required('⚠ Vui lòng nhập email nhân viên'),
+    department: Yup.string().required('⚠ Vui lòng chọn bộ phận làm việc'),
+    position: Yup.string().required('⚠ Vui lòng chọn chức vụ'),
+    username: Yup.string().required('⚠ Vui lòng nhập tên đăng nhập'),
+    password: Yup.string().required('⚠ Vui lòng nhập mật khẩu'),
 });
 
 const ModalStaffManagement = (props) => {
     const { show, onHide, title, isSubmit, modalData, setModalData, ...otherProps } = props;
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [departmentData, setDepartmentData] = useState([]);
+    const [positiontData, setPositiontData] = useState([]);
+    const accessToken = Cookies.get('accessToken');
+    const { showToast } = UseToast();
 
     useEffect(() => {
         if (modalData.date) {
@@ -29,9 +38,58 @@ const ModalStaffManagement = (props) => {
             setSelectedDate(new Date());
         }
     }, [modalData.date]);
+
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                const result = await Get_DropDown_Department();
+                if(result.status === 200) {
+                    setDepartmentData(result.data);
+                }
+            }
+            fetchData();
+        } catch(error) {
+            console.log(error);
+        }
+    }, [setDepartmentData]);
+
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                const result = await Get_DropDown_Position();
+                if(result.status === 200) {
+                    setPositiontData(result.data);
+                }
+            }
+            fetchData();
+        } catch(error) {
+            console.log(error);
+        }
+    }, [setDepartmentData]);
     
-    const handleSubmit = (values) => {
-        
+    const handleSubmit = async (values) => {
+        const data = {
+            user : {
+                username: values.username,
+                password: values.password
+            },
+            email: values.email,
+            department_id: values.department,
+            position_id: values.position,
+            full_name: values.name,
+            address: values.location,
+            join_date: values.date.split('T')[0]
+        }
+        console.log(data);
+        try {
+            const result = await Create_Account_Emp(data);
+            if(result.status === 201) {
+                showToast("Thêm thông tin nhân viên thành công!", "success");
+                onHide();
+            }
+        } catch(error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -59,16 +117,24 @@ const ModalStaffManagement = (props) => {
                             name: modalData.em_name || '',
                             location: modalData.from || '',
                             date: modalData.date || '',
+                            email: modalData.em_name || '',
                             department: modalData.em_item || '',
+                            position: modalData.em_item || '',
                             username: '',
                             password: ''
                         }}
                         validationSchema={loginSchemas}
                         onSubmit={handleSubmit}
                         >
-                        {({ isSubmitting, values, setSubmitting }) => (
+                        {({ isSubmitting, values, setSubmitting, setFieldValue }) => (
                             <Form>
                                 <div className={`${styles.field_form} `}>                       
+                                    <div className='' style={{ height: '80px'}}>
+                                        <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Email nhân viên:</span>
+                                        <Field type="email" name="email" placeholder="- - - - - -" className="form-control" />
+                                        <ErrorMessage name="email" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
+                                    </div>
+
                                     <div className='' style={{ height: '90px'}}>
                                         <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Tên nhân viên:</span>
                                         <Field type="text" name="name" placeholder="- - - - - -" className="form-control" />
@@ -90,7 +156,10 @@ const ModalStaffManagement = (props) => {
                                                 <DatePicker
                                                     name="date"
                                                     selected={selectedDate}
-                                                    onChange={(date) => setSelectedDate(date)}
+                                                    onChange={(date) => {
+                                                        setSelectedDate(date);
+                                                        setFieldValue("date", date ? date.toISOString() : "");
+                                                    }}
                                                     dateFormat="dd/MM/yyyy"
                                                     placeholderText="Chọn ngày"
                                                 />
@@ -100,30 +169,43 @@ const ModalStaffManagement = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className='' style={{ height: '90px'}}>
-                                        <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Tên bộ phận:</span>
-                                        <Field type="text" name="department" placeholder="- - - - - -" className="form-control" />
-                                        <ErrorMessage name="department" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />  
+                                    <div className='row mb-3'  style={{ height: '90px'}}>
+                                        <div className='col-lg-6 col-md-6 mt-3'>
+                                            <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }}>Bộ phận nhân sự:</span>
+                                            <Field as="select" name="department"  className="form_select_level w-100 border-0" style={{ border: "1px solid #DEE2E6", height: '30px', outline: 'none', boxShadow: 'none'}}>
+                                                <option value="">Bộ phận nhân sự</option>
+                                                {departmentData.map((_data, index) => (
+                                                    <option key={index} value={_data.id}>{_data.name}</option>
+                                                ))}
+                                            </Field>
+                                            <ErrorMessage name="department" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
+                                        </div>
+                                        
+                                        <div className='col-lg-6 col-md-6 mt-3'>
+                                            <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }}>Chức vụ:</span>
+                                            <Field as="select" name="position"  className="form_select_level w-100 border-0" style={{ border: "1px solid #DEE2E6", height: '30px', outline: 'none', boxShadow: 'none'}}>
+                                                <option value="">Chức vụ</option>
+                                                {positiontData.map((_data, index) => (
+                                                    <option key={index} value={_data.id}>{_data.name}</option>
+                                                ))}
+                                            </Field>
+                                            <ErrorMessage name="position" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
+                                        </div>
                                     </div>
 
-                                    {title === 'Thêm thông tin nhân viên'
-                                    ?
-                                        <div className={`${styles.space_center} `}>
-                                            <div className='' style={{ height: '90px'}}>
-                                                <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Tên đăng nhập:</span>
-                                                <Field type="text" name="username" placeholder="- - - - - -" className="form-control" />
-                                                <ErrorMessage name="username" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
-                                            </div>
-
-                                            <div className='' style={{ height: '90px'}}>
-                                                <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Mật khẩu:</span>
-                                                <Field type="text" name="password" placeholder="- - - - - -" className="form-control" />
-                                                <ErrorMessage name="password" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
-                                            </div>
+                                    <div className={`${styles.space_center} `}>
+                                        <div className='' style={{ height: '90px'}}>
+                                            <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Tên đăng nhập:</span>
+                                            <Field type="text" name="username" placeholder="- - - - - -" className="form-control" />
+                                            <ErrorMessage name="username" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
                                         </div>
-                                    :
-                                        <></>
-                                    }
+
+                                        <div className='' style={{ height: '90px'}}>
+                                            <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Mật khẩu:</span>
+                                            <Field type="text" name="password" placeholder="- - - - - -" className="form-control" />
+                                            <ErrorMessage name="password" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div className={`${styles.btn_submit} d-flex gap-2 mt-4`}>

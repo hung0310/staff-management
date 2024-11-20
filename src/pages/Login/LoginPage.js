@@ -68,14 +68,14 @@ const LoginPage = () => {
                                     <div className={`${styles.field_form} `}>
                                         <div className={`${styles.input_box} `} style={{ height: '80px'}}>
                                             <ion-icon name="mail-outline"></ion-icon>
-                                            <Field type="username" name="username" autocomplete="off" className={`${styles.form_control} ${IsUsername ? styles.has_value_user : ''} `} onChange={(e) => {setFieldValue('username', e.target.value); setIsUsername(!!e.target.value); }} />
+                                            <Field type="username" name="username" autoComplete="off" className={`${styles.form_control} ${IsUsername ? styles.has_value_user : ''} `} onChange={(e) => {setFieldValue('username', e.target.value); setIsUsername(!!e.target.value); }} />
                                             <label className='fw-bold'>Username:</label>
                                             <ErrorMessage name="username" component="div" className={`${styles.error_message}`} style={{ color: "white", fontSize: '12px' }} />  
                                         </div>
                                         
                                         <div className={`${styles.input_box} `} style={{ height: '80px'}}>
                                             <ion-icon name="lock-closed-outline"></ion-icon>
-                                            <Field type="password" name="password" autocomplete="off" className={`${styles.form_control} ${IsPassword ? styles.has_value_pass : ''} `} onChange={(e) => {setFieldValue('password', e.target.value); setIsPassword(!!e.target.value); }}/>
+                                            <Field type="password" name="password" autoComplete="off" className={`${styles.form_control} ${IsPassword ? styles.has_value_pass : ''} `} onChange={(e) => {setFieldValue('password', e.target.value); setIsPassword(!!e.target.value); }}/>
                                             <label className='fw-bold'>Password:</label>
                                             <ErrorMessage name="password" component="div" className={`${styles.error_message}`} style={{ color: "white", fontSize: '12px' }} />
                                         </div>

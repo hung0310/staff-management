@@ -1,40 +1,8 @@
 
 
-.request_staff {
-    margin-top: 50px;
-    .request_staff_wrapper {
-        .subtitle {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            h3 {
-                font-weight: 500;
-                color: #344767;
-            }
-
-            .btn_add_staff {
-                background-color: #2B85EC;
-                padding: 10px 15px;
-                border: none;
-                border-radius: 5px;
-                font-size: 16px;
-                color: #fff;
-                transition: 0.2s;
-
-                &:hover {
-                    background-color: #5ca1f0;
-                    transition: 0.2s;
-                }
-
-                svg {
-                    color: #fff;
-                    width: 18px;
-                    height: 18px;
-                }
-            }
-        }
-
+.leave_list {
+    .leave_list_container {
+        margin-top: 30px;
         .table {
             .table_info {
                 .custom_table {
@@ -45,9 +13,10 @@
 
                     thead {
                         width: 100%;
+
                         tr {
                             width: 100%;
-                            padding: 0 20px;
+                            border-bottom: 5px solid #bbd8f9;
 
                             span {
                                 color: #7c7373;
@@ -57,36 +26,28 @@
                                 align-items: center;
                             }
 
-                            .id_tb {
+                            .order_tb {
                                 width: 10%;
-                            }
-
-                            .item_tb {
-                                width: 16%;
-                            }
-
-                            .name_tb {
-                                width: 16%;
-                            }
-
-                            .date_tb {
-                                width: 10%;
-                            }
-
-                            .number_tb {
-                                width: 12%;
-                            }
-
-                            .email_tb {
-                                width: 15%;
                             }
 
                             .from_tb {
-                                width: 12%;
+                                width: 20%;
                             }
 
-                            .action_tb {
-                                width: 9%;
+                            .to_tb {
+                                width: 20%;
+                            }
+
+                            .status_tb {
+                                width: 10%;
+                            }
+
+                            .note_tb {
+                                width: 30%;
+                            }
+
+                            .file_tb {
+                                width: 10%;
                             }
                         }
                     }
@@ -126,10 +87,19 @@
     
                                 .custom_btn {
                                     display: flex;
-                                    justify-content: center;
+                                    justify-content: space-between;
                                     align-items: center;
     
-                                    .delete {
+                                    .approve {
+                                        svg {
+                                            width: 16px;
+                                            height: 16px;
+                                            cursor: pointer;
+                                            color: #2B85EC;
+                                        }
+                                    }
+    
+                                    .denial {
                                         svg {
                                             width: 16px;
                                             height: 16px;
@@ -144,10 +114,10 @@
                 }
             }
         }
-    }
 
-    .paginnate {
-        display: flex;
-        justify-content: flex-end;
+        .paginnate {
+            display: flex;
+            justify-content: flex-end;
+        }
     }
 }

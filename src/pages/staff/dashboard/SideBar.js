@@ -6,33 +6,31 @@ import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import {
     faCubes,
-    faFileCirclePlus,
     faHouse,
     faCircleUser,
-    faGear,
-    faBell,
     faBars,
     faAngleDown,
     faRightFromBracket,
     faClock,
     faPaperPlane,
-    faCalendarCheck,
-    faBusinessTime
+    faBusinessTime,
+    faRightLong,
+    faFileSignature
 } from "@fortawesome/free-solid-svg-icons";
 
 import styles from './SideBar.module.scss';
 import HomePage from './components/home-page/HomePage';
 import OvertimeRegistration from './components/overtime-registration/OvertimeRegistration';
 import LeaveApplication from './components/leave-application/LeaveApplication';
-import TimeKeeping from './components/time-keeping/TimeKeeping';
 import TrackWork from './components/track-work/TrackWork';
+import ManageProfile from './components/manage-profile/ManageProfile';
+import ListRequest from './components/list-request/ListRequest';
 
 const item_sidebar = [
     { id: 1, label: "Home Page", icon: faCubes, render_content: 'homepage' },
     { id: 2, label: "Overtime Registration", icon: faClock, render_content: 'overtime' },
     { id: 3, label: "Leave Application", icon: faPaperPlane, render_content: 'leave' },
-    { id: 4, label: "TimeKeeping", icon: faCalendarCheck, render_content: 'time_keeping' },
-    { id: 5, label: "Track Work Hours", icon: faBusinessTime, render_content: 'track_work' },
+    { id: 4, label: "Track Work Hours", icon: faBusinessTime, render_content: 'track_work' },
     // {
     //     id: 6,
     //     label: "...",
@@ -57,6 +55,7 @@ const Sidebar = () => {
     const [navigateLink, setNavigateLink] = useState('Home Page');
     const [selectedContent, setSelectedContent] = useState(item_sidebar[0].render_content);
     const [expandedItems, setExpandedItems] = useState({});
+    const [expand, setExpand] = useState(true);
     const [contentMultiChoice, setContentMultiChoice] = useState('');
     const [labelMultiChoice, setLabelMultiChoice] = useState('');
 
@@ -68,10 +67,12 @@ const Sidebar = () => {
                 return <OvertimeRegistration />;
             case 'leave':
                 return <LeaveApplication />;
-            case 'time_keeping':
-                return <TimeKeeping />;
             case 'track_work':
                 return <TrackWork />;
+            case 'manage_profile':
+                return <ManageProfile />
+            case 'list_request':
+                return <ListRequest />
             default:
                 return <HomePage />;
         }
@@ -140,13 +141,28 @@ const Sidebar = () => {
         navigate('/');
     }
 
+    const handleExpand = () => {
+        setExpand(!expand);
+    }
+
+    const handleManageProfile = () => {
+        setSelectedContent('manage_profile');
+    }
+
+    const handleShowListRequest = () => {
+        setSelectedContent('list_request');
+    }
+
     return (
         <div className={`${styles.view_wrapper}`}>
-            <div className={`${styles.view}`}>
+            <div className={`${styles.view} ${expand ? '' : styles.no_expand}`}>
                 <aside ref={sidebarRef} className={`${styles.nav_menu} ${isShow ? styles.open : ''}`}>
                     <div className={`${styles.logo}`}>
-                        <img src={Logo} alt='logo' />
-                        <span><strong>S</strong>ixnature</span>
+                        <div className={`${styles.content_logo} `}>
+                            <img src={Logo} alt='logo' />
+                            <span><strong>S</strong>ixnature</span>
+                        </div>
+                        <FontAwesomeIcon icon={faRightLong} onClick={handleExpand}/>
                     </div>
 
                     <hr style={{ width: '100%', color: '#fff' }}></hr>
@@ -207,9 +223,9 @@ const Sidebar = () => {
 
                             <div className={`${styles.function_nav}`}>
                                 <div className={`${styles.custom_ico}`}>
-                                    <FontAwesomeIcon icon={faBell} />
+                                    <FontAwesomeIcon icon={faFileSignature} onClick={handleShowListRequest}/>
                                     <FontAwesomeIcon ref={buttonRef} icon={faBars} className={`${styles.ico_bars}`} onClick={handleShow} />
-                                    <FontAwesomeIcon icon={faCircleUser} />
+                                    <FontAwesomeIcon icon={faCircleUser} onClick={handleManageProfile}/>
                                     <FontAwesomeIcon icon={faRightFromBracket} onClick={handleLogout}/>
                                 </div>
                             </div>

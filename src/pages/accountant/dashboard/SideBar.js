@@ -16,7 +16,8 @@ import {
     faMoneyCheckDollar,
     faUsers,
     faRightFromBracket,
-    faMagnifyingGlass
+    faMagnifyingGlass,
+    faRightLong
 } from "@fortawesome/free-solid-svg-icons";
 
 import styles from './SideBar.module.scss';
@@ -56,11 +57,12 @@ const Sidebar = () => {
     const [navigateLink, setNavigateLink] = useState('Home Page');
     const [selectedContent, setSelectedContent] = useState(item_sidebar[0].render_content);
     const [expandedItems, setExpandedItems] = useState({});
+    const [expand, setExpand] = useState(true);
     const [contentMultiChoice, setContentMultiChoice] = useState('');
     const [labelMultiChoice, setLabelMultiChoice] = useState('');
 
     const renderContent = () => {
-        switch (selectedContent) {
+        switch (selectedContent) { 
             case 'homepage':
                 return <HomePage />;
             case 'approve_request':
@@ -139,13 +141,20 @@ const Sidebar = () => {
         };
     }, [isShow]);
 
+    const handleExpand = () => {
+        setExpand(!expand);
+    }
+
     return (
         <div className={`${styles.view_wrapper}`}>
-            <div className={`${styles.view}`}>
+            <div className={`${styles.view} ${expand ? '' : styles.no_expand}`}>
                 <aside ref={sidebarRef} className={`${styles.nav_menu} ${isShow ? styles.open : ''}`}>
                     <div className={`${styles.logo}`}>
-                        <img src={Logo} alt='logo' />
-                        <span><strong>S</strong>ixnature</span>
+                        <div className={`${styles.content_logo} `}>
+                            <img src={Logo} alt='logo' />
+                            <span><strong>S</strong>ixnature</span>
+                        </div>
+                        <FontAwesomeIcon icon={faRightLong} onClick={handleExpand}/>
                     </div>
 
                     <hr style={{ width: '100%', color: '#fff' }}></hr>

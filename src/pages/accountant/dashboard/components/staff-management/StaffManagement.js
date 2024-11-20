@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './StaffManagement.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,6 +24,7 @@ const StaffManagement = () => {
     const [nameModal, setNameModal] = useState('');
     const [totalPage, setTotalPage] = useState(0);
     const [totalRows, setTotalRows] = useState(0);
+    const [dataEmp, setDataEmp] = useState([]);
   
     const { currentPage, PaginationComponent } = useReactPaginate(totalPage);
 
@@ -41,6 +42,17 @@ const StaffManagement = () => {
     const handleClick_Delete = () => {
         setShowModalDele(true);
     }
+
+    // useEffect(() => {
+    //     try {
+    //         const fetchData = async () => {
+                
+    //         }
+    //         fetchData();
+    //     } catch(error) {
+    //         console.log(error);
+    //     }
+    // }, []);
 
     return (
         <div className={`${styles.request_staff} `}>
@@ -144,9 +156,6 @@ const StaffManagement = () => {
 
                                                 <td>
                                                     <div className={`${styles.custom_btn} `}>
-                                                        <span className={`${styles.edit} `}>
-                                                            <FontAwesomeIcon icon={faPenToSquare} onClick={() => handleClick_AddStaff(item)}/>
-                                                        </span>
                                                         <span className={`${styles.delete} `}>
                                                             <FontAwesomeIcon icon={faTrashCan} onClick={() => handleClick_Delete()}/>
                                                         </span>

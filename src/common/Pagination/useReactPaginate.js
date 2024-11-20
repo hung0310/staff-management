@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import ReactPaginate from 'react-paginate';
-// import '../../public/static/assets/css/stylePaginate.module.css';
 
-export const useReactPaginate = (totalPage) => {
+export const useReactPaginate = (totalPage, totalRows) => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const handlePageClick = (event) => {
@@ -10,11 +9,13 @@ export const useReactPaginate = (totalPage) => {
     };
 
     const handlePrevPage = () => {
-        setCurrentPage(prev => Math.max(prev - 2, 1));
+        // setCurrentPage(prev => Math.max(prev - 2, 1));
+        setCurrentPage(Math.max(1, 1));
     };
 
     const handleNextPage = () => {
-        setCurrentPage(prev => Math.min(prev + 2, totalPage));
+        // setCurrentPage(prev => Math.min(prev + 2, totalPage));
+        setCurrentPage(Math.min(totalRows, totalPage));
     };
 
     const PaginationComponent = () => ( 
