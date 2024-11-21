@@ -26,13 +26,14 @@ import LeaveRequest from './components/leave-request/LeaveRequest';
 import StaffManagement from './components/staff-management/StaffManagement';
 import Salary from './components/salary/Salary';
 import StaffSituation from './components/staff-situation/StaffSituation';
+import ListRequest from './components/list-request/ListRequest';
 
 const item_sidebar = [
-    { id: 1, label: "Home Page", icon: faCubes, render_content: 'homepage' },
-    { id: 2, label: "Approve Request", icon: faCalendar, render_content: 'approve_request' },
-    { id: 3, label: "Staff Management", icon: faUserGear, render_content: 'staff_management' },
-    { id: 4, label: "Salary", icon: faMoneyCheckDollar, render_content: 'salary' },
-    { id: 5, label: "Staff Situation", icon: faUsers, render_content: 'situation' },
+    // { id: 1, label: "Home Page", icon: faCubes, render_content: 'homepage' },
+    { id: 1, label: "Tình hình nhân sự", icon: faUsers, render_content: 'situation' },
+    { id: 2, label: "Quản lý nhân viên", icon: faUserGear, render_content: 'staff_management' },
+    { id: 3, label: "Duyệt yêu cầu", icon: faCalendar, render_content: 'approve_request' },
+    { id: 4, label: "Lương", icon: faMoneyCheckDollar, render_content: 'salary' },
     // {
     //     id: 6,
     //     label: "...",
@@ -63,10 +64,8 @@ const Sidebar = () => {
 
     const renderContent = () => {
         switch (selectedContent) { 
-            case 'homepage':
-                return <HomePage />;
             case 'approve_request':
-                return <LeaveRequest />;
+                return <ListRequest />;
             case 'staff_management':
                 return <StaffManagement />;
             case 'salary':
@@ -74,7 +73,7 @@ const Sidebar = () => {
             case 'situation':
                 return <StaffSituation />;
             default:
-                return <HomePage />;
+                return <StaffSituation />;
         }
     };
 

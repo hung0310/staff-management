@@ -3,6 +3,8 @@ import styles from './TrackWork.module.scss'
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useCountdown } from '../../../../../hooks/useCountDown';
+import { CheckIn, CheckOut } from '../../../../../apis/staffAPI';
+import { UseToast } from '../../../../../hooks/ToastProvider';
 
 const TrackWork = () => {
     const [timeInMorning, setTimeInMorning] = useState('');
@@ -12,25 +14,37 @@ const TrackWork = () => {
     const [timeInOvertime, setTimeInOvertime] = useState('');
     const [timeOutOvertime, setTimeOutOvertime] = useState('');
     const [countOutDay, setCountOutDay] = useState(0);
+    const { showToast } = UseToast();
     const [dateNow, setDateNow] = useState('');
     const [statusButton, setStatusButton] = useState(false);
     const { minutes, seconds } = useCountdown();
 
-    const SetTime = (hour, minitue) => {
+    const SetTime = async (hour, minitue) => {
         const totalMinitues = hour * 60 + minitue;
         console.log(">Hello", totalMinitues);  
         // if(totalMinitues >= (8 * 60) && totalMinitues <= (8 * 60 + 15)) {
         //     const currentTime = `${hour}:${minitue} AM`;
         //     setTimeInMorning(currentTime);            
         // }
+        let result;
         if(totalMinitues >= (50) && totalMinitues <= (55)) {
             const currentTime = `${hour}:${minitue} AM`;
             setTimeInMorning(currentTime);      
+            try {
+                result = await CheckIn({'shift_type': 'MORNING'});
+            } catch(error) {
+                console.log(error);
+            }
         }
 
         if(totalMinitues >= (13 * 60 + 30) && totalMinitues <= (13 * 60 + 45)) {
             const currentTime = `${hour}:${minitue} PM`;
-            setTimeInAfternoon(currentTime);            
+            setTimeInAfternoon(currentTime);   
+            try {
+                result = await CheckIn({'shift_type': 'AFTERNOON'});
+            } catch(error) {
+                console.log(error);
+            }         
         }
 
         if(totalMinitues >= (18 * 60)) {
@@ -52,11 +66,21 @@ const TrackWork = () => {
                     const currentTime = `${hour}:${minitue} AM`;
                     setTimeOutMorning(currentTime);
                 }
+                try {
+                    result = await CheckOut({'shift_type': 'MORNING'});
+                } catch(error) {
+                    console.log(error);
+                }     
             }
 
             if(totalMinitues >= (17 * 60) && totalMinitues <= (17 * 60 + 30))  {
                 const currentTime = `${hour}:${minitue} PM`;
                 setTimeOutAfternoon(currentTime);
+                try {
+                    result = await CheckOut({'shift_type': 'AFTERNOON'});
+                } catch(error) {
+                    console.log(error);
+                }     
             }
         } else {
             if(totalMinitues >= (11 * 60 + 45) && totalMinitues <= (12 * 60))  {
@@ -67,12 +91,26 @@ const TrackWork = () => {
                     const currentTime = `${hour}:${minitue} AM`;
                     setTimeOutMorning(currentTime);
                 }
+                try {
+                    result = await CheckOut({'shift_type': 'MORNING'});
+                } catch(error) {
+                    console.log(error);
+                }     
             }
 
             if(totalMinitues >= (17 * 60 + 15) && totalMinitues <= (17 * 60 + 30))  {
                 const currentTime = `${hour}:${minitue} PM`;
                 setTimeOutAfternoon(currentTime);
+                try {
+                    result = await CheckOut({'shift_type': 'AFTERNOON'});
+                } catch(error) {
+                    console.log(error);
+                }     
             }
+        }
+
+        if(result?.status === 200) {
+            showToast("Chấm công thành công!", "success");
         }
     }
 

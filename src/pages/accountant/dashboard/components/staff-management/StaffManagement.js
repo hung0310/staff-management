@@ -43,17 +43,6 @@ const StaffManagement = () => {
         setShowModalDele(true);
     }
 
-    // useEffect(() => {
-    //     try {
-    //         const fetchData = async () => {
-                
-    //         }
-    //         fetchData();
-    //     } catch(error) {
-    //         console.log(error);
-    //     }
-    // }, []);
-
     return (
         <div className={`${styles.request_staff} `}>
             <div className={`${styles.request_staff_wrapper} `}>
@@ -114,7 +103,7 @@ const StaffManagement = () => {
 
                                     <th className={`${styles.action_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>ACTION</span>
+                                            <span>TÙY CHỌN</span>
                                         </div>
                                     </th>
                                 </tr>
@@ -192,6 +181,10 @@ const StaffManagement = () => {
             <ModalDelete
                 show={showModalDele}
                 onHide={() => setShowModalDele(false)}
+                content={'Bạn có chắc chắn muốn xóa nhân viên này không?'}
+                style={{
+                    backgroundColor: '#ff4646'
+                }}
             />
         </div>
     );

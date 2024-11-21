@@ -33,6 +33,46 @@ export const Send_Leave_Request = (data) => {
     return apiService.post(url.send_leave_request, data);
 }
 
+export const Send_Overtime_Request = (data) => {
+    return apiService.post(url.send_overtime_request, data);
+}
+
+export const List_Leave_Request_Manager = (page) => {
+    return apiService.get(`${url.list_leave_request_manager}?page=${page}`);
+}
+
+export const List_Overtime_Request_Manager = (page) => {
+    return apiService.get(`${url.list_overtime_request_manager}?page=${page}`);
+}
+
 export const List_Leave_Request = (page) => {
     return apiService.get(`${url.list_leave_request}?page=${page}`);
+}
+
+export const List_Overtime_Request = (page) => {
+    return apiService.get(`${url.list_overtime_request}?page=${page}`);
+}
+
+export const CheckIn = (data) => {
+    return apiService.post(url.check_in, data);
+}
+
+export const CheckOut = (data) => {
+    return apiService.post(url.check_out, data);
+}
+
+export const Approve_Leave_Request = (data) => {
+    return apiService.post(url.approve_leave_request, data);
+}
+
+export const Approve_Overtime_Request = (data) => {
+    return apiService.post(url.approve_overtime_request, data);
+}
+
+export const Reject_Leave_Request = (data) => {
+    return apiService.post(url.reject_leave_request, data);
+}
+
+export const Reject_Overtime_Request = (data) => {
+    return apiService.post(url.reject_overtime_request, data);
 }

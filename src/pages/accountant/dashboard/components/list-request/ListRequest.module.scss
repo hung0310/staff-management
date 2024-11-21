@@ -1,0 +1,63 @@
+
+
+.list_request {
+    .list_request_container {
+        margin-top: 20px;
+        .header_nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+
+            .leave_request {
+                cursor: pointer;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                transition: 0.3s;
+
+                &.active {
+                    border-bottom: 10px solid #b5d5f7;
+                }
+                
+                span {
+                    text-align: center;
+                    font-size: 20px;
+                    font-weight: 500;
+                }
+
+                &:hover {
+                    background-color: #b5d5f7;
+                    transition: 0.3s;
+                }
+            }
+
+            .overtime_request {
+                cursor: pointer;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                transition: 0.3s;
+
+                &.active {
+                    border-bottom: 10px solid #b5d5f7;
+                }
+                
+                span {
+                    text-align: center;
+                    font-size: 20px;
+                    font-weight: 500;
+                }
+
+                &:hover {
+                    background-color: #b5d5f7;
+                    transition: 0.3s;
+                }
+            }
+        }
+    }
+}

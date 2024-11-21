@@ -18,6 +18,7 @@ const LeaveRequest = () => {
         const fetchData = async () => {
             try {
                 const result = await List_Leave_Request(currentPage);
+                console.log(result.data);
                 if(result.status === 200) {
                     const total = Math.ceil(result.data.totalRows / result.data.page_size);
                     setTotalPage(total);
@@ -88,11 +89,11 @@ const LeaveRequest = () => {
                                                 </td>
 
                                                 <td>
-                                                    <span>{item.from_date}</span>
+                                                    <span>{item.from_date.split('-').reverse().join('/')}</span>
                                                 </td>
 
                                                 <td>
-                                                    <span>{item.to_date}</span>
+                                                    <span>{item.to_date.split('-').reverse().join('/')}</span>
                                                 </td>
 
                                                 <td>

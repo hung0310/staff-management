@@ -6,24 +6,44 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarCheck, faClock } from '@fortawesome/free-solid-svg-icons';
+import { Send_Overtime_Request } from '../../../../../apis/staffAPI';
+import { UseToast } from '../../../../../hooks/ToastProvider';
 
 const loginSchemas = Yup.object().shape({
-    id_emp: Yup.string().required('⚠ Please enter your employee code'),
-    name: Yup.string().required('⚠ Please enter your name'),
-    item: Yup.string().required('⚠ Please enter your department'),
-    day: Yup.string().required('⚠ Please enter day'),
-    // hour_start: Yup.string().required('⚠ Please enter hour start'),
-    // hour_end: Yup.string().required('⚠ Please enter hour end'),
+    day_work: Yup.string().required('⚠ Vui lòng chọn ngày muốn đăng ký'),
+    hour_start: Yup.string().required('⚠ Vui lòng chọn thời gian bắt đầu'),
+    hour_end: Yup.string().required('⚠ Vui lòng chọn thời gian kết thúc'),
 });
 
 const OvertimeRegistration = () => {
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    // const [selectedHourStart, setSelectedHourStart] = useState(new Date());
-    // const [selectedHourEnd, setSelectedHourEnd] = useState(new Date());
-    
-    const handleSubmit = (values) => {
+    const { showToast } = UseToast();
+    const [selectedDay, setSelectedDay] = useState(new Date());
+    const [selectedHourStart, setSelectedHourStart] = useState();
+    const [selectedHourEnd, setSelectedHourEnd] = useState();
 
+    const formatTime = (date) => {
+        if (!date) return "";
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}:00`;
+    };
+    
+    const handleSubmit = async (values) => {
+        try {
+            const data = {
+                date: values.day_work.split('T')[0],
+                from_time: formatTime(selectedHourStart),
+                to_time: formatTime(selectedHourEnd),
+                note: values.note
+            }
+            const result = await Send_Overtime_Request(data);
+            if(result.status === 201) {
+                showToast("Yêu cầu của bạn đã được gửi!", "success");
+            }
+        } catch(error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -31,12 +51,9 @@ const OvertimeRegistration = () => {
             <div className={`${styles.overtime_form} `}>
                 <Formik
                     initialValues={{
-                        id_emp: '',
-                        name: '',
-                        item: '',
-                        day: '',
-                        // hour_start: '',
-                        // hour_end: '',
+                        day_word: '',
+                        hour_start: '',
+                        hour_end: '',
                         note: '',
                     }}
                     validationSchema={loginSchemas}
@@ -45,62 +62,45 @@ const OvertimeRegistration = () => {
                     {({ isSubmitting, values, setFieldValue }) => (
                         <Form>
                             <div className={`${styles.field_form} `}>   
-                                <div className={`${styles.location} `}>
-                                    <div className='' style={{ height: '90px'}}>
-                                        <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Mã số nhân viên:</span>
-                                        <Field type="text" name="id_emp" placeholder="- - - - - -" className="form-control" />
-                                        <ErrorMessage name="id_emp" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
+                                <div className={`${styles.day_container}`} style={{ height: '90px'}}>
+                                    <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Ngày đăng ký:</span>
+                                    <div className={`${styles.date_picker}`} style={{paddingBottom: '10px'}}>
+                                        <DatePicker
+                                            name="day_work"
+                                            selected={selectedDay}
+                                            onChange={(date) => {
+                                                setSelectedDay(date);
+                                                setFieldValue("day_work", date ? date.toISOString() : "");
+                                            }}
+                                            dateFormat="dd/MM/yyyy"
+                                            placeholderText="Chọn ngày"
+                                        />
+                                        <FontAwesomeIcon icon={faCalendarCheck} />
                                     </div>
+                                    <ErrorMessage name="day" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
                                 </div>
 
-                                <div className='' style={{ height: '90px'}}>
-                                    <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Tên nhân viên:</span>
-                                    <Field type="text" name="name" placeholder="- - - - - -" className="form-control" />
-                                    <ErrorMessage name="name" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
-                                </div>
-
-                                <div className={`${styles.space_center} `}>
-                                    <div className={`${styles.location} `}>
-                                        <div className='' style={{ height: '90px'}}>
-                                            <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Bộ phận làm việc:</span>
-                                            <Field type="text" name="item" placeholder="- - - - - -" className="form-control" />
-                                            <ErrorMessage name="item" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
-                                        </div>
-                                    </div>
-
-                                    <div className={`${styles.date_container} `} style={{ height: '90px'}}>
-                                        <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Ngày bắt đầu:</span>
-                                        <div className={`${styles.date_picker}`} style={{paddingBottom: '10px'}}>
-                                            <DatePicker
-                                                name="day"
-                                                selected={selectedDate}
-                                                onChange={(date) => setSelectedDate(date)}
-                                                dateFormat="dd/MM/yyyy"
-                                                placeholderText="Chọn ngày"
-                                            />
-                                            <FontAwesomeIcon icon={faCalendarCheck} />
-                                        </div>
-                                        <ErrorMessage name="day" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
-                                    </div>
-                                </div>
-
-                                {/* <div className={`${styles.space_center}`}>
+                                <div className={`${styles.space_center}`}>
                                     <div className={`${styles.date_container}`} style={{ height: '90px' }}>
                                         <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }}>Bắt đầu từ:</span>
                                         <div className={`${styles.date_picker}`} style={{ paddingBottom: '10px' }}>
                                             <DatePicker
-                                            name="hour_start"
-                                            selected={values.hour_start}
-                                            onChange={(time) => {
-                                                setSelectedHourStart(time);
-                                                setFieldValue('hour_start', time);
-                                            }}
-                                            showTimeSelect
-                                            showTimeSelectOnly
-                                            timeCaption="Thời gian"
-                                            dateFormat="HH:mm"
-                                            placeholderText="Chọn giờ bắt đầu"
+                                                name="hour_start"
+                                                selected={selectedHourStart}
+                                                onChange={(hour_start) => {
+                                                    setSelectedHourStart(hour_start);
+                                                    setFieldValue("hour_start", hour_start ? hour_start.toISOString() : "");
+                                                }}
+                                                showTimeSelect
+                                                showTimeSelectOnly
+                                                timeCaption="Thời gian"
+                                                dateFormat="HH:mm"
+                                                minTime={new Date(new Date().setHours(18, 0, 0, 0))}
+                                                maxTime={new Date(new Date().setHours(23, 0, 0, 0))}
+                                                placeholderText="Chọn giờ bắt đầu"
+                                                autoComplete="off"
                                             />
+                                            <FontAwesomeIcon icon={faClock} />
                                         </div>
                                         <ErrorMessage name="hour_start" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
                                     </div>
@@ -109,31 +109,35 @@ const OvertimeRegistration = () => {
                                         <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }}>Kết thúc lúc:</span>
                                         <div className={`${styles.date_picker}`} style={{ paddingBottom: '10px' }}>
                                             <DatePicker
-                                            name="hour_end"
-                                            selected={values.hour_end}
-                                            onChange={(time) => {
-                                                setSelectedHourEnd(time);
-                                                setFieldValue('hour_end', time);
-                                            }}
-                                            showTimeSelect
-                                            showTimeSelectOnly
-                                            timeCaption="Thời gian"
-                                            dateFormat="HH:mm"
-                                            placeholderText="Chọn giờ kết thúc"
+                                                name="hour_end"
+                                                selected={selectedHourEnd}
+                                                onChange={(hour_end) => {
+                                                    setSelectedHourEnd(hour_end);
+                                                    setFieldValue("hour_end", hour_end ? hour_end.toISOString() : "");
+                                                }}
+                                                showTimeSelect
+                                                showTimeSelectOnly
+                                                timeCaption="Thời gian"
+                                                dateFormat="HH:mm"
+                                                minTime={new Date(new Date().setHours(17, 30, 0, 0))}
+                                                maxTime={new Date(new Date().setHours(23, 0, 0, 0))}
+                                                placeholderText="Chọn giờ kết thúc"
+                                                autoComplete="off"
                                             />
+                                            <FontAwesomeIcon icon={faClock} />
                                         </div>
                                         <ErrorMessage name="hour_end" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
                                     </div>
-                                </div> */}
+                                </div>
 
-                                <div className={`${styles.textarea_custom} `} style={{ height: '90px'}}>
+                                <div className={`${styles.textarea_custom} `}>
                                     <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Ghi chú:</span>
-                                    <textarea></textarea>
+                                    <Field as="textarea" name="note" placeholder="- - - - - - -" className="form-control" style={{ height: '200px' }} />
                                 </div>
                             </div>
 
                             <div className='w-100 d-flex justify-content-center align-items-center mt-4'>
-                                <button className={`${styles.custom_btn} `}>
+                                <button className={`${styles.custom_btn} `} type='submit'>
                                     Xác nhận
                                 </button>
                             </div>
