@@ -25,6 +25,7 @@ import LeaveApplication from './components/leave-application/LeaveApplication';
 import TrackWork from './components/track-work/TrackWork';
 import ManageProfile from './components/manage-profile/ManageProfile';
 import ListRequest from './components/list-request/ListRequest';
+import DetailTimesheet from './components/detail-timesheet/DetailTimesheet';
 
 const item_sidebar = [
     { id: 1, label: "Home Page", icon: faCubes, render_content: 'homepage' },
@@ -68,11 +69,13 @@ const Sidebar = () => {
             case 'leave':
                 return <LeaveApplication />;
             case 'track_work':
-                return <TrackWork />;
+                return <TrackWork setSelectedContent={setSelectedContent} />;
             case 'manage_profile':
                 return <ManageProfile />
             case 'list_request':
                 return <ListRequest />
+            case 'detail_timesheet':
+                return <DetailTimesheet />
             default:
                 return <HomePage />;
         }

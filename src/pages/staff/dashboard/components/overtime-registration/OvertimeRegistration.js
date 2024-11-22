@@ -77,7 +77,7 @@ const OvertimeRegistration = () => {
                                         />
                                         <FontAwesomeIcon icon={faCalendarCheck} />
                                     </div>
-                                    <ErrorMessage name="day" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
+                                    <ErrorMessage name="day_work" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
                                 </div>
 
                                 <div className={`${styles.space_center}`}>

@@ -57,8 +57,16 @@ export const CheckIn = (data) => {
     return apiService.post(url.check_in, data);
 }
 
+export const CheckInOvertime = () => {
+    return apiService.post(url.check_in_overtime);
+}
+
 export const CheckOut = (data) => {
     return apiService.post(url.check_out, data);
+}
+
+export const CheckOutOvertime = () => {
+    return apiService.post(url.check_out_overtime);
 }
 
 export const Approve_Leave_Request = (data) => {
@@ -75,4 +83,12 @@ export const Reject_Leave_Request = (data) => {
 
 export const Reject_Overtime_Request = (data) => {
     return apiService.post(url.reject_overtime_request, data);
+}
+
+export const Get_Daily_Timesheet = () => {
+    return apiService.get(url.daily_timesheet);
+}
+
+export const Get_Current_Month_Timesheet = (page) => {
+    return apiService.get(`${url.current_month_timesheet}?page=${page}`);
 }
