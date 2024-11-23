@@ -3,55 +3,118 @@ import styles from './StaffManagement.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-
+import { UseToast } from '../../../../../hooks/ToastProvider';
 import NoResult from '../../../../../common/NoResult/NoResult';
 import { useReactPaginate } from '../../../../../common/Pagination/useReactPaginate';
 import ModalStaffManagement from '../../../../../common/ModalStaffManagement/ModalStaffManagement';
 import ModalDelete from '../../../../../common/ModalDelete/ModalDelete';
-
-const mockDatas = [
-    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', phone_number: '0868155371', from: 'Hà Nội', email: 'nth0626zz@gmail.com', date: '26/10/2024'},
-    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', phone_number: '0868155371', from: 'Hà Nội', email: 'nth0626zz@gmail.com', date: '26/10/2024'},
-    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', phone_number: '0868155371', from: 'Hà Nội', email: 'nth0626zz@gmail.com', date: '26/10/2024'},
-    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', phone_number: '0868155371', from: 'Hà Nội', email: 'nth0626zz@gmail.com', date: '26/10/2024'},
-    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', phone_number: '0868155371', from: 'Bà Rịa Vũng Tàu', email: 'nth0626zz@gmail.com', date: '26/10/2024'},
-]
+import { Delete_Account_Emp, Get_DropDown_Department, Get_List_Employee } from '../../../../../apis/staffAPI';
 
 const StaffManagement = () => {
+    const { showToast } = UseToast();
     const [showModal, setShowModal] = useState(false);
     const [showModalDele, setShowModalDele] = useState(false);
     const [modalData, setModalData] = useState({});
     const [nameModal, setNameModal] = useState('');
     const [totalPage, setTotalPage] = useState(0);
     const [totalRows, setTotalRows] = useState(0);
+    const [nextPage, setNextPage] = useState(null);
+    const [previousPage, setPreviousPage] = useState(null);
     const [dataEmp, setDataEmp] = useState([]);
+    const [isSubmitDelete, setIsSubmitDelete] = useState(false);
+    const [idEmp, setIdEmp] = useState('');
+    const [departmentData, setDepartmentData] = useState([]);
   
-    const { currentPage, PaginationComponent } = useReactPaginate(totalPage);
+    const { currentPage, PaginationComponent } = useReactPaginate(totalPage, totalRows);
+
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                const result = await Get_List_Employee('', '');
+                if(result.status === 200) {
+                    setNextPage(result.data.next_page);
+                    setPreviousPage(result.data.previous_page);
+                    setDataEmp(result.data.results || []);
+                }
+            }
+            fetchData();
+        } catch(error) {
+            console.log(error);
+        }
+    }, []);
 
     const handleClick_AddStaff = (_item) => {
-        if(_item.em_id) {
-            setModalData(_item);
-            setNameModal('Chỉnh sửa thông tin nhân viên');
-        } else {
-            setModalData({});
-            setNameModal('Thêm thông tin nhân viên');
-        }
+        setModalData(_item);
+        setNameModal('Chỉnh sửa thông tin nhân viên');
         setShowModal(true);
     }
 
-    const handleClick_Delete = () => {
+    const handleClick_Delete = (id) => {
         setShowModalDele(true);
+        setIdEmp(id);
+    }
+
+    useEffect(() => {
+        if(isSubmitDelete) {
+            const fetchData = async () => {
+                const result = await Delete_Account_Emp(idEmp);
+                if(result.status === 200) {
+                    showToast("Thông tin nhân viên đã được xóa thành công!", "success");
+                    setIsSubmitDelete(false);
+                    setIdEmp('');
+                }
+            };
+            fetchData();
+        }
+    }, [isSubmitDelete]);
+
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                const result = await Get_DropDown_Department();
+                if(result.status === 200) {
+                    setDepartmentData(result.data);
+                }
+            }
+            fetchData();
+        } catch(error) {
+            console.log(error);
+        }
+    }, [setDepartmentData]);
+
+    const handleChooseDepartment = async (e) => {
+        try {
+            const result = await Get_List_Employee(e.target.value, currentPage);
+            if(result.status === 200) {
+                const total = Math.ceil(result.data.totalRows / result.data.page_size);
+                setTotalPage(total);
+                setTotalRows(result.data.totalRows);
+                setDataEmp(result.data.results || []);
+            }
+        } catch(error) {
+            console.log(error);
+        }
     }
 
     return (
         <div className={`${styles.request_staff} `}>
             <div className={`${styles.request_staff_wrapper} `}>
                 <div className={`${styles.subtitle} `}>
-                    <h3>Staff Management</h3>
+                    <h3>Thông tin nhân viên</h3>
                     <button className={`${styles.btn_add_staff} `} onClick={handleClick_AddStaff}>
                         <FontAwesomeIcon icon={faCirclePlus} />
                         &nbsp;&nbsp;Thêm nhân viên
                     </button>
+                </div>
+                <div className={`${styles.select_department} `}>
+                    <div className={`${styles.select_option} `}>
+                        <select name="name-of-select" id="id-of-select" onChange={handleChooseDepartment}>
+                            <option value="" disabled selected>Bộ phận nhân sự</option>
+                            {departmentData.map((item, index) => (
+                                <option value={item.name} key={index}>{item.name}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
                 <hr style={{ backgroundColor: ''}}></hr>
                 <div className={`${styles.table} `}>
@@ -65,27 +128,27 @@ const StaffManagement = () => {
                                         </div>
                                     </th>
 
-                                    <th className={`${styles.item_tb} `}>
-                                        <div className={`${styles.title} `}>
-                                            <span>BỘ PHẬN LÀM VIỆC</span>
-                                        </div>
-                                    </th>
-
                                     <th className={`${styles.name_tb} `}>
                                         <div className={`${styles.title} `}>
                                             <span>TÊN NHÂN VIÊN</span>
                                         </div>
                                     </th>
 
-                                    <th className={`${styles.number_tb} `}>
+                                    <th className={`${styles.depart_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>SỐ ĐIỆN THOẠI</span>
+                                            <span>BỘ PHẬN LÀM VIỆC</span>
                                         </div>
                                     </th>
 
-                                    <th className={`${styles.from_tb} `}>
+                                    <th className={`${styles.position_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>QUÊ QUÁN</span>
+                                            <span>CHỨC VỤ</span>
+                                        </div>
+                                    </th>
+
+                                    <th className={`${styles.date_tb} `}>
+                                        <div className={`${styles.title} `}>
+                                            <span>NGÀY BẮT ĐẦU</span>
                                         </div>
                                     </th>
 
@@ -95,9 +158,21 @@ const StaffManagement = () => {
                                         </div>
                                     </th>
 
-                                    <th className={`${styles.date_tb} `}>
+                                    <th className={`${styles.gender_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>NGÀY BẮT ĐẦU</span>
+                                            <span>GIỚI TÍNH</span>
+                                        </div>
+                                    </th>
+
+                                    <th className={`${styles.phone_number_tb} `}>
+                                        <div className={`${styles.title} `}>
+                                            <span>SỐ ĐIỆN THOẠI</span>
+                                        </div>
+                                    </th>
+
+                                    <th className={`${styles.address_tb} `}>
+                                        <div className={`${styles.title} `}>
+                                            <span>ĐỊA CHỈ</span>
                                         </div>
                                     </th>
 
@@ -109,30 +184,30 @@ const StaffManagement = () => {
                                 </tr>
                             </thead>
 
-                            {mockDatas.length > 0 ?
+                            {dataEmp.length > 0 ?
                             <>
-                                {mockDatas.map((item, index) => {
+                                {dataEmp.map((item, index) => {
                                     return (
                                         <tbody key={index}>
                                             <tr>
                                                 <td>
-                                                    <span style={{ color: '#F19828', fontWeight: '500', fontSize: '12px' }}>{item.em_id}</span>
+                                                    <span style={{ color: '#F19828', fontWeight: '500', fontSize: '12px' }}>{item.employee_id}</span>
                                                 </td>
 
                                                 <td>
-                                                    <span>{item.em_item}</span>
+                                                    <span>{item.full_name}</span>
                                                 </td>
 
                                                 <td>
-                                                    <span>{item.em_name}</span>
+                                                    <span>{item.department}</span>
                                                 </td>
 
                                                 <td>
-                                                    <span>{item.phone_number}</span>
+                                                    <span>{item.position}</span>
                                                 </td>
 
                                                 <td>
-                                                    <span>{item.from}</span>
+                                                    <span>{item.join_date.split('-').reverse().join('/')}</span>
                                                 </td>
 
                                                 <td>
@@ -140,13 +215,21 @@ const StaffManagement = () => {
                                                 </td>
 
                                                 <td>
-                                                    <span>{item.date}</span>
+                                                    <span>{item.gender}</span>
+                                                </td>
+
+                                                <td>
+                                                    <span>{item.phone_number}</span>
+                                                </td>
+
+                                                <td>
+                                                    <span>{item.address}</span>
                                                 </td>
 
                                                 <td>
                                                     <div className={`${styles.custom_btn} `}>
                                                         <span className={`${styles.delete} `}>
-                                                            <FontAwesomeIcon icon={faTrashCan} onClick={() => handleClick_Delete()}/>
+                                                            <FontAwesomeIcon icon={faTrashCan} onClick={() => handleClick_Delete(item.employee_id)}/>
                                                         </span>
                                                     </div>
                                                 </td>                                            
@@ -166,9 +249,14 @@ const StaffManagement = () => {
                     </div>
                 </div>
             </div>
-            <div className={`${styles.paginnate} mt-5`}>
-                <PaginationComponent/>
-            </div>
+
+            {nextPage && previousPage !== null ?
+                <div className={`${styles.paginnate} mt-5`}>
+                    <PaginationComponent/>
+                </div>
+            :
+                <></>
+            }
 
             <ModalStaffManagement 
                 show={showModal}
@@ -181,6 +269,7 @@ const StaffManagement = () => {
             <ModalDelete
                 show={showModalDele}
                 onHide={() => setShowModalDele(false)}
+                setIsButton={setIsSubmitDelete}
                 content={'Bạn có chắc chắn muốn xóa nhân viên này không?'}
                 style={{
                     backgroundColor: '#ff4646'

@@ -224,9 +224,7 @@ const Sidebar = () => {
                                     </div>
                                 </div>
                                 <div className={`${styles.custom_ico}`}>
-                                    <FontAwesomeIcon icon={faBell} />
                                     <FontAwesomeIcon ref={buttonRef} icon={faBars} className={`${styles.ico_bars}`} onClick={handleShow} />
-                                    <FontAwesomeIcon icon={faCircleUser} />
                                     <FontAwesomeIcon icon={faRightFromBracket} onClick={handleLogout}/>
                                 </div>
                             </div>

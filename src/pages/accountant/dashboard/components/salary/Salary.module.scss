@@ -2,7 +2,20 @@
 
 .request_staff {
     margin-top: 50px;
+    overflow-x: auto;
+
     .request_staff_wrapper {
+        min-width: 100%;
+
+        .select_department {
+            .select_option {
+                select {
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                }
+            }
+        }
+        
         .subtitle {
             display: flex;
             justify-content: space-between;
@@ -15,10 +28,13 @@
         }
 
         .table {
+            overflow-x: auto;
+
             .table_info {
                 .custom_table {
-                    margin-top: 26px;
-                    width: 100%;
+                    margin-top: 10px;
+                    min-width: 100%;
+                    width: 120%;
                     table-layout: fixed;
                     border-collapse: collapse;
 
@@ -41,36 +57,40 @@
                                 width: 10%;
                             }
 
-                            .item_tb {
-                                width: 16%;
+                            .depart_tb {
+                                width: 20%;
                             }
 
                             .name_tb {
-                                width: 18%;
+                                width: 20%;
                             }
 
                             .regular_tb {
                                 width: 10%;
                             }
 
+                            .salary_regular_tb {
+                                width: 10%;
+                            }
+
                             .overtime_tb {
+                                width: 10%;
+                            }
+                            
+                            .salary_overtime_tb {
+                                width: 10%;
+                            }
+
+                            .bonus_tb {
                                 width: 10%;
                             }
 
                             .total_hour_tb {
-                                width: 12%;
+                                width: 10%;
                             }
 
-                            .day_off_tb {
-                                width: 7%;
-                            }
-
-                            .bonuses_tb {
-                                width: 8%;
-                            }
-
-                            .total_tb {
-                                width: 9%;
+                            .total_salary_tb {
+                                width: 20%;
                             }
                         }
                     }

@@ -28,7 +28,6 @@ const ModalStaffManagement = (props) => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [departmentData, setDepartmentData] = useState([]);
     const [positiontData, setPositiontData] = useState([]);
-    const accessToken = Cookies.get('accessToken');
     const { showToast } = UseToast();
 
     useEffect(() => {
@@ -131,7 +130,13 @@ const ModalStaffManagement = (props) => {
                                 <div className={`${styles.field_form} `}>                       
                                     <div className='' style={{ height: '80px'}}>
                                         <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Email nhân viên:</span>
-                                        <Field type="email" name="email" placeholder="- - - - - -" className="form-control" />
+                                        <Field type="email" name="email" placeholder="- - - - - -" className="form-control" 
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                setFieldValue("email", value);
+                                                setFieldValue("username", value); 
+                                            }}
+                                        />
                                         <ErrorMessage name="email" component="div" className={`${styles.error_message}`} style={{ color: "red", fontSize: '12px' }} />
                                     </div>
 
@@ -193,7 +198,10 @@ const ModalStaffManagement = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className={`${styles.space_center} `}>
+                                    {/* <div className={`${styles.random} `}>
+                                        <span className={`${styles.random_account} `} onClick={() => handleRandom()}>Tạo tài khoản tự động</span>
+                                    </div> */}
+                                    <div className={`${styles.space_center} mt-2`}>
                                         <div className='' style={{ height: '90px'}}>
                                             <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Tên đăng nhập:</span>
                                             <Field type="text" name="username" placeholder="- - - - - -" className="form-control" />

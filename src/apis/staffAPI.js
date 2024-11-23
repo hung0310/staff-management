@@ -21,6 +21,10 @@ export const Create_Account_Emp = (data) => {
     return apiService.post(url.create_account_emp, data);
 }
 
+export const Delete_Account_Emp = (data) => {
+    return apiService.delete(`${url.delete_account_emp}?employee_id=${data}`);
+}
+
 export const Get_Profile_Emp = () => {
     return apiService.get(url.get_profile_emp);
 }
@@ -95,4 +99,16 @@ export const Get_Daily_Timesheet = () => {
 
 export const Get_Current_Month_Timesheet = (page) => {
     return apiService.get(`${url.current_month_timesheet}?page=${page}`);
+}
+
+export const Get_List_Employee = (department, page) => {
+    return apiService.get(`${url.list_employee}?department=${department}&page=${page}`);
+}
+
+export const Get_Tracking_Time_Employee = (department, page) => {
+    return apiService.get(`${url.list_employee}?department=${department}&page=${page}`);
+}
+
+export const Get_Salary_Month = (department, month, year, page) => {
+    return apiService.get(`${url.list_employee}?department=${department}&month=${month}&year=${year}&page=${page}`);
 }

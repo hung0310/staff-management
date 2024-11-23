@@ -2,7 +2,11 @@
 
 .request_staff {
     margin-top: 50px;
+    overflow-x: auto;
+
     .request_staff_wrapper {
+        min-width: 100%;
+
         .subtitle {
             display: flex;
             justify-content: space-between;
@@ -35,11 +39,23 @@
             }
         }
 
+        .select_department {
+            .select_option {
+                select {
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                }
+            }
+        }
+
         .table {
+            overflow-x: auto;
+
             .table_info {
                 .custom_table {
                     margin-top: 26px;
-                    width: 100%;
+                    min-width: 100%;
+                    width: 120%;
                     table-layout: fixed;
                     border-collapse: collapse;
 
@@ -58,35 +74,43 @@
                             }
 
                             .id_tb {
-                                width: 10%;
-                            }
-
-                            .item_tb {
-                                width: 16%;
+                                width: 5%;
                             }
 
                             .name_tb {
-                                width: 16%;
+                                width: 26%;
+                            }
+
+                            .depart_tb {
+                                width: 20%;
+                            }
+
+                            .position_tb {
+                                width: 15%;
                             }
 
                             .date_tb {
                                 width: 10%;
                             }
 
-                            .number_tb {
-                                width: 12%;
-                            }
-
                             .email_tb {
-                                width: 15%;
+                                width: 30%;
                             }
 
-                            .from_tb {
+                            .gender_tb {
+                                width: 10%;
+                            }
+
+                            .phone_number_tb {
                                 width: 12%;
+                            }
+
+                            .address_tb {
+                                width: 20%;
                             }
 
                             .action_tb {
-                                width: 9%;
+                                width: 8%;
                             }
                         }
                     }

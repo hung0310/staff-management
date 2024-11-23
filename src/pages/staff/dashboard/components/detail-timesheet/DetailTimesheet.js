@@ -121,32 +121,34 @@ const DetailTimesheet = () => {
 
                             <tbody>
                                 {dataTimesheet.map((item, index) => (
-                                    <tr>
-                                        <td>
-                                            <span>{getWeekdayFromDate(item.date)}</span>
-                                        </td>
-                                        <td>
-                                            <span>{item.date.split('-').reverse().join('/')}</span>
-                                        </td>
-                                        <td>
-                                            <span>{item?.morning_shift !== null ? item.morning_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
-                                        </td>
-                                        <td>
-                                            <span>{item?.morning_shift !== null ? item.morning_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
-                                        </td>
-                                        <td>
-                                            <span>{item?.afternoon_shift !== null ? item.afternoon_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
-                                        </td>
-                                        <td>
-                                            <span>{item?.afternoon_shift !== null ? item.afternoon_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
-                                        </td>
-                                        <td>
-                                            <span>{item?.overtime_shift !== null ? item.overtime_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
-                                        </td>
-                                        <td>
-                                            <span>{item?.overtime_shift !== null ? item.overtime_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
-                                        </td>
-                                    </tr>
+                                    getWeekdayFromDate(item.date) !== 'Chủ Nhật' ? (
+                                        <tr>
+                                            <td>
+                                                <span>{getWeekdayFromDate(item.date)}</span>
+                                            </td>
+                                            <td>
+                                                <span>{item.date.split('-').reverse().join('/')}</span>
+                                            </td>
+                                            <td>
+                                                <span>{item?.morning_shift !== null ? item.morning_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                            </td>
+                                            <td>
+                                                <span>{item?.morning_shift !== null ? item.morning_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                            </td>
+                                            <td>
+                                                <span>{item?.afternoon_shift !== null ? item.afternoon_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                            </td>
+                                            <td>
+                                                <span>{item?.afternoon_shift !== null ? item.afternoon_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                            </td>
+                                            <td>
+                                                <span>{item?.overtime_shift !== null ? item.overtime_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                            </td>
+                                            <td>
+                                                <span>{item?.overtime_shift !== null ? item.overtime_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                            </td>
+                                        </tr>
+                                    ) : null
                                 ))}
                             </tbody>
                         </table>

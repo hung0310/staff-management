@@ -1,6 +1,16 @@
 .request_staff {
     margin-top: 50px;
     .request_staff_wrapper {
+        
+        .select_department {
+            .select_option {
+                select {
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                }
+            }
+        }
+
         .subtitle {
             display: flex;
             justify-content: space-between;

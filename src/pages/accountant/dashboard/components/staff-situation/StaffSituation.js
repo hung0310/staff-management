@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './StaffSituation.module.scss';
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -8,20 +8,59 @@ import { faCirclePlus, faPenToSquare, faTrashCan } from '@fortawesome/free-solid
 import NoResult from '../../../../../common/NoResult/NoResult';
 import { useReactPaginate } from '../../../../../common/Pagination/useReactPaginate';
 import ButtonExport from '../../../../../components/ButtonExport/ButtonExport';
-
-const mockDatas = [
-    {em_id: '#EMP : 00001', em_item: 'Marketing',em_name: 'Nguyễn Văn A', date: '26/10/2024', day: '22', hour: '205', day_off: '1', total: '205', status: 'Trễ giờ 1 lần', evalute: 'Khá'},
-    {em_id: '#EMP : 00002', em_item: 'Hành chính, nhân sự', em_name: 'Nguyễn Văn B', date: '26/10/2024', day: '22', hour: '205', day_off: '0', total: '205',status: 'Đúng giờ', evalute: 'Tốt'},
-    {em_id: '#EMP : 00003', em_item: 'Tài chính, kế toán', em_name: 'Nguyễn Văn C', date: '26/10/2024', day: '22', hour: '205', day_off: '1', total: '205',status: 'Trễ giờ 1 lần', evalute: 'Khá'},
-    {em_id: '#EMP : 00004', em_item: 'Sale', em_name: 'Nguyễn Văn D', date: '26/10/2024', day: '22', hour: '205', day_off: '1', total: '205',status: 'Trễ giờ 1 lần', evalute: 'Khá'},
-    {em_id: '#EMP : 00005', em_item: 'Kỹ Thuật, sản xuất', em_name: 'Nguyễn Văn E', date: '26/10/2024', day: '22', hour: '205', day_off: '1', total: '205',status: 'Trễ giờ 1 lần', evalute: 'Khá'},
-]
+import { Get_DropDown_Department, Get_Tracking_Time_Employee } from '../../../../../apis/staffAPI';
 
 const StaffSituation = () => {
+    const [nextPage, setNextPage] = useState(null);
     const [totalPage, setTotalPage] = useState(0);
     const [totalRows, setTotalRows] = useState(0);
+    const [departmentData, setDepartmentData] = useState([]);
+    const [dataEmp, setDataEmp] = useState([]);
   
-    const { currentPage, PaginationComponent } = useReactPaginate(totalPage);
+    const { currentPage, PaginationComponent } = useReactPaginate(totalPage, totalRows);
+
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                const result = await Get_DropDown_Department();
+                if(result.status === 200) {
+                    setDepartmentData(result.data);
+                }
+            }
+            fetchData();
+        } catch(error) {
+            console.log(error);
+        }
+    }, [setDepartmentData]);
+
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                const result = await Get_Tracking_Time_Employee('', '');
+                if(result.status === 200) {
+                    setNextPage(result.data.next_page);
+                    setDataEmp(result.data.results || []);
+                }
+            }
+            fetchData();
+        } catch(error) {
+            console.log(error);
+        }
+    }, []);
+
+    const handleChooseDepartment = async (e) => {
+        try {
+            const result = await Get_Tracking_Time_Employee(e.target.value, currentPage);
+            if(result.status === 200) {
+                const total = Math.ceil(result.data.totalRows / result.data.page_size);
+                setTotalPage(total);
+                setTotalRows(result.data.totalRows);
+                setDataEmp(result.data.results || []);
+            }
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
     return (
         <div className={`${styles.request_staff} `}>
@@ -29,6 +68,16 @@ const StaffSituation = () => {
                 <div className={`${styles.subtitle} `}>
                     <h3>Staff Management</h3>
                     <ButtonExport totalCol={12} totalCheck={false} nameFile={'Staff_Situation_Report'} />
+                </div>
+                <div className={`${styles.select_department} `}>
+                    <div className={`${styles.select_option} `}>
+                        <select name="name-of-select" id="id-of-select" onChange={handleChooseDepartment}>
+                            <option value="" disabled selected>Bộ phận nhân sự</option>
+                            {departmentData.map((item, index) => (
+                                <option value={item.name} key={index}>{item.name}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
                 <hr style={{ backgroundColor: ''}}></hr>
                 <div className={`${styles.table} `}>
@@ -44,7 +93,7 @@ const StaffSituation = () => {
 
                                     <th>
                                         <div className={`${styles.item_tb} `}>
-                                            <span>PHÒNG BAN</span>
+                                            <span>BỘ PHẬN NHÂN SỰ</span>
                                         </div>
                                     </th>
 
@@ -55,14 +104,14 @@ const StaffSituation = () => {
                                     </th>
 
                                     <th>
-                                        <div className={`${styles.date_tb} `}>
-                                            <span>NGÀY VÀO LÀM</span>
+                                        <div className={`${styles.day_tb} `}>
+                                            <span>NGÀY CÔNG TRONG THÁNG</span>
                                         </div>
                                     </th>
 
                                     <th>
-                                        <div className={`${styles.day_tb} `}>
-                                            <span>NGÀY CÔNG TRONG THÁNG</span>
+                                        <div className={`${styles.hour_tb} `}>
+                                            <span>GIỜ LÀM CHÍNH</span>
                                         </div>
                                     </th>
 
@@ -84,7 +133,7 @@ const StaffSituation = () => {
                                         </div>
                                     </th>
 
-                                    <th>
+                                    {/* <th>
                                         <div className={`${styles.status} `}>
                                             <span>TÌNH TRẠNG CHẤM CÔNG</span>
                                         </div>
@@ -94,7 +143,7 @@ const StaffSituation = () => {
                                         <div className={`${styles.evalute_tb} `}>
                                             <span>ĐÁNH GIÁ</span>
                                         </div>
-                                    </th>
+                                    </th> */}
 
                                     <th>
                                         <div className={`${styles.note_tb} `}>
@@ -104,42 +153,42 @@ const StaffSituation = () => {
                                 </tr>
                             </thead>
 
-                            {mockDatas.length > 0 ?
+                            {dataEmp.length > 0 ?
                             <>
-                                {mockDatas.map((item, index) => {
+                                {dataEmp.map((item, index) => {
                                     return (
                                         <tbody key={index}>
                                             <tr>
                                                 <td>
-                                                    <span style={{ color: '#F19828', fontWeight: '500' }}>{item.em_id}</span>
+                                                    <span style={{ color: '#F19828', fontWeight: '500' }}>{item.employee_id}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.em_item}</span>
+                                                    <span>{item.department}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.em_name}</span>
+                                                    <span>{item.full_name}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.date}</span>
+                                                    <span>{item.working_days ?? 0}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.day}</span>
+                                                    <span>{item.regular_hours ?? 0}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.hour}</span>
+                                                    <span>{item.overtime_hours ?? 0}</span>
                                                 </td>    
                                                 <td>
-                                                    <span>{item.day_off}</span>
+                                                    <span>{item.leave_days ?? 0}</span>
                                                 </td>   
                                                 <td>
-                                                    <span>{item.total}</span>
+                                                    <span>{(+item.regular_hours || 0) + (+item.overtime_hours || 0)}</span>
                                                 </td>   
-                                                <td>
+                                                {/* <td>
                                                     <span>{item.status}</span>
                                                 </td>   
                                                 <td>
                                                     <span>{item.evalute}</span>
-                                                </td>   
+                                                </td>    */}
                                                 <td>
                                                     <TextareaAutosize
                                                         minRows={1}
@@ -164,6 +213,14 @@ const StaffSituation = () => {
                     </div>
                 </div>
             </div>
+
+            {nextPage !== null ?
+                <div className={`${styles.paginnate} mt-5`}>
+                    <PaginationComponent/>
+                </div>
+            :
+                <></>
+            }
         </div>
     );
 };

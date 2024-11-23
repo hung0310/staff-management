@@ -50,6 +50,27 @@
             }
         }
 
+        .random {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+
+            .random_account {
+                width: 180px;
+                font-size: 13px;
+                padding: 5px 10px;
+                border: 2px solid #dee2e6;
+                cursor: pointer;
+                text-align: center;
+                transition: 0.3s;
+
+                &:hover {
+                    background-color: #8cd5ff;
+                    transition: 0.3s;
+                }
+            }
+        }
+
         .error_message {
             display: inline-block;
             animation: slideInFromLeft 1.5s ease-in-out;

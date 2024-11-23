@@ -11,6 +11,7 @@ import ModalDelete from '../../../../../../../common/ModalDelete/ModalDelete';
 const OvertimeRequest = () => {
     const { showToast } = UseToast();
     const [dataLeave, setDataLeave] = useState([]);
+    const [nextPage, setNextPage] = useState(null);
     const [totalPage, setTotalPage] = useState(0);
     const [totalRows, setTotalRows] = useState(0);
     const [contentModal, setContentModal] = useState('');
@@ -26,6 +27,7 @@ const OvertimeRequest = () => {
             const result = await List_Overtime_Request_Manager(currentPage);
             if(result.status === 200) {
                 const total = Math.ceil(result.data.totalRows / result.data.page_size);
+                setNextPage(result.data.next_page);
                 setTotalPage(total);
                 setTotalRows(result.data.totalRows);
                 setDataLeave(result.data.results || []);
@@ -212,9 +214,13 @@ const OvertimeRequest = () => {
                         </table>
                     </div>
                 </div>
-                <div className={`${styles.paginnate} mt-5`}>
-                    <PaginationComponent/>
-                </div>
+                {nextPage !== null ?
+                    <div className={`${styles.paginnate} mt-5`}>
+                        <PaginationComponent/>
+                    </div>
+                :
+                    <></>
+                }
             </div>
 
             <ModalDelete
