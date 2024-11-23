@@ -309,6 +309,76 @@ $tablet-width: 768px;
                             align-items: center;
                             gap: 16px;
                             margin-left: 20px;
+
+                            .dropdown_menu {
+                                position: relative;
+                                display: inline-block;
+
+                                svg {
+                                    width: 18px;
+                                    height: 18px;
+                                    color: #344767;
+                                    cursor: pointer;
+                                    transform: translateY(2px);
+                                }
+
+                                &:hover {
+                                    .menu_item {
+                                        display: block;
+                                        flex-direction: column;
+                                    }
+                                }
+
+                                .menu_item {
+                                    display: none;
+                                    position: absolute;
+                                    right: -54px;
+                                    background-color: #fff;
+                                    width: 280px;
+                                    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+                                    z-index: 10;
+                                    border-radius: 5px;
+                                    overflow: hidden;
+
+                                    .custom_dropdown {
+                                        display: flex;
+                                        flex-direction: column;
+
+                                        .cus_item {
+                                            display: flex;
+                                            gap: 10px;
+                                            cursor: pointer;
+                                            padding: 10px 10px;
+    
+                                            &:hover {
+                                                background-color: #c0ddfc;
+
+                                                svg {
+                                                    animation: rotate infinite 2s linear;
+                                                    background-color: transparent;
+                                                }
+
+                                                @keyframes rotate {
+                                                    from {
+                                                        transform: rotate(0deg);
+                                                    }
+                                                    to {
+                                                        transform: rotate(360deg);
+                                                    }
+                                                }
+                                            }
+
+                                            svg {
+                                                width: 16px;
+                                                height: 16px;
+                                                color: #344767;
+                                                transform: translateY(2px);
+                                                background-color: transparent;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
         
                             svg {
                                 width: 18px;

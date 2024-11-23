@@ -3,6 +3,7 @@ export const base_url = process.env.REACT_APP_API_URL;
 export const auth_login = `${base_url}/user/login/`;
 export const auth_refresh = `${base_url}/user/refresh/`;
 export const auth_change_password = `${base_url}/user/change_password/`;
+export const change_password = `${base_url}/user/change_password/`;
 
 export const get_dropdown_department = `${base_url}/employee/department_list_dropdown/`;
 export const get_dropdown_position = `${base_url}/employee/position_list_dropdown/`;

@@ -1,0 +1,67 @@
+$tablet-width: 992px;
+$mobile1-width: 768px;
+$mobile2-width: 576px;
+
+@mixin tablet {
+    @media (min-width: #{$mobile1-width}) and (max-width: #{$tablet-width}) {
+        @content;
+    }
+}
+
+@mixin mobile1 {
+  @media (min-width: #{$mobile2-width}) and (max-width: #{$mobile1-width}) {
+      @content;
+  }
+}
+
+@mixin mobile2 {
+  @media (max-width: #{$mobile2-width}) {
+      @content;
+  }
+}
+
+.change_password {
+    .content {
+        width: 400px;
+        margin-top: 50px;
+        .field_form {
+            .error_message {
+                display: inline-block;
+                animation: slideInFromLeft 1.5s ease-in-out;
+            }
+            
+            @keyframes slideInFromLeft {
+                0% {
+                    transform: translateX(0%);
+                    opacity: 0;
+                }
+                100% {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        }
+
+        .btn_submit {
+            .custom_btn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #fff;
+                border: 2px solid #70C8F7;
+                transition: background-color 0.5s, border-color 0.5s, color 0.5s;
+
+                svg {
+                    width: 16px;
+                    height: 16px;
+                }
+
+                &:hover {
+                    color: #fff;
+                    background-color: #70C8F7;
+                    transition: 0.5s;
+                }
+            }
+        }
+    }
+}

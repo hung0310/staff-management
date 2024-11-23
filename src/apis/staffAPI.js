@@ -5,6 +5,10 @@ export const OAuth_Login = (username, password) => {
     return apiService.post(url.auth_login, { username, password });
 }
 
+export const OAuth_ChangePassword = (data) => {
+    return apiService.put(url.change_password, data);
+}
+
 export const Get_DropDown_Department = () => {
     return apiService.get(url.get_dropdown_department);
 }

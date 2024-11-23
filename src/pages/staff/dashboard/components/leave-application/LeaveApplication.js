@@ -106,7 +106,7 @@ const LeaveApplication = () => {
                                 </div>
                             </div>
 
-                            <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >File minh chứng:</span>
+                            <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Tệp minh chứng:</span>
                             <div className={`${styles.upload}`}>
                                 {selectedFile ?
                                     <div className={`${styles.file_upload}`}>
@@ -119,7 +119,7 @@ const LeaveApplication = () => {
                                         <FontAwesomeIcon icon={faX} className={`${styles.cus_ico} `} onClick={handleRemoveFile}/>
                                     </div>
                                 :
-                                    <span>Browser File To Upload</span>
+                                    <span>Tệp minh chứng</span>
                                 }
 
                                 <div className={`${styles.upload_cloud}`} onClick={() => document.getElementById('file-upload').click()}>

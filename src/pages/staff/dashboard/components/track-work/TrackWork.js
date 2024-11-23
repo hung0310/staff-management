@@ -138,7 +138,7 @@ const TrackWork = ({setSelectedContent}) => {
 
     useEffect(() => {
         fetchDailyTimeSheet();
-    }, [dailyTimesheet ,setDailyTimesheet]);
+    }, []);
 
     useEffect(() => {
         const checkTime = () => {

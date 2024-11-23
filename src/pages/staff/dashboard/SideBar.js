@@ -15,7 +15,8 @@ import {
     faPaperPlane,
     faBusinessTime,
     faRightLong,
-    faFileSignature
+    faFileSignature,
+    faGear
 } from "@fortawesome/free-solid-svg-icons";
 
 import styles from './SideBar.module.scss';
@@ -26,12 +27,13 @@ import TrackWork from './components/track-work/TrackWork';
 import ManageProfile from './components/manage-profile/ManageProfile';
 import ListRequest from './components/list-request/ListRequest';
 import DetailTimesheet from './components/detail-timesheet/DetailTimesheet';
+import SettingAccount from './components/setting-account/SettingAccount';
 
 const item_sidebar = [
-    { id: 1, label: "Home Page", icon: faCubes, render_content: 'homepage' },
-    { id: 2, label: "Overtime Registration", icon: faClock, render_content: 'overtime' },
-    { id: 3, label: "Leave Application", icon: faPaperPlane, render_content: 'leave' },
-    { id: 4, label: "Track Work Hours", icon: faBusinessTime, render_content: 'track_work' },
+    // { id: 1, label: "Home Page", icon: faCubes, render_content: 'homepage' },
+    { id: 1, label: "Chấm công", icon: faBusinessTime, render_content: 'track_work' },
+    { id: 2, label: "Đăng ký làm thêm giờ", icon: faClock, render_content: 'overtime' },
+    { id: 3, label: "Đăng ký nghỉ phép", icon: faPaperPlane, render_content: 'leave' },
     // {
     //     id: 6,
     //     label: "...",
@@ -72,6 +74,8 @@ const Sidebar = () => {
                 return <TrackWork setSelectedContent={setSelectedContent} />;
             case 'manage_profile':
                 return <ManageProfile />
+            case 'setting_account':
+                return <SettingAccount />
             case 'list_request':
                 return <ListRequest />
             case 'detail_timesheet':
@@ -148,8 +152,8 @@ const Sidebar = () => {
         setExpand(!expand);
     }
 
-    const handleManageProfile = () => {
-        setSelectedContent('manage_profile');
+    const handleManageProfile = (name) => {
+        setSelectedContent(name);
     }
 
     const handleShowListRequest = () => {
@@ -228,7 +232,26 @@ const Sidebar = () => {
                                 <div className={`${styles.custom_ico}`}>
                                     <FontAwesomeIcon icon={faFileSignature} onClick={handleShowListRequest}/>
                                     <FontAwesomeIcon ref={buttonRef} icon={faBars} className={`${styles.ico_bars}`} onClick={handleShow} />
-                                    <FontAwesomeIcon icon={faCircleUser} onClick={handleManageProfile}/>
+                                    <div className={`${styles.dropdown_menu} `}>
+                                        <FontAwesomeIcon icon={faCircleUser}/>
+                                        <div className={`${styles.menu_item} `}>
+                                            <div className={`${styles.custom_dropdown} `}>
+                                                <div className={`${styles.cus_item} `} onClick={() => handleManageProfile('manage_profile')}>
+                                                    <FontAwesomeIcon icon={faGear} />
+                                                    <span>
+                                                        Cài đặt trang cá nhân
+                                                    </span>
+                                                </div>
+                                                <div className={`${styles.cus_item} `} onClick={() => handleManageProfile('setting_account')}>
+                                                    <FontAwesomeIcon icon={faGear} />
+                                                    <span>
+                                                        Quản lý tài khoản và mật khẩu
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     <FontAwesomeIcon icon={faRightFromBracket} onClick={handleLogout}/>
                                 </div>
                             </div>

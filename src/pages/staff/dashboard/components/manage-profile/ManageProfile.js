@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import avatar_default from '../../../../../assets/images/dashboard/user_default.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp, faBookmark, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp, faBookmark, faCalendarCheck, faUserLock } from "@fortawesome/free-solid-svg-icons";
 import DatePicker from 'react-datepicker';
 import { UseToast } from '../../../../../hooks/ToastProvider';
 import { Get_Profile_Emp, Update_Profile, Upload_Avatar_Emp } from '../../../../../apis/staffAPI';
