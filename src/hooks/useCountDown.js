@@ -1,42 +1,97 @@
 import { useState, useEffect } from "react";
 
+const TIME_RANGES = [
+  {
+    name: 'CHECKIN_MORNING',
+    startHour: 8,
+    startMinute: 0,
+    endHour: 8,
+    endMinute: 15,
+    description: 'Check-in Ca Sáng'
+  },
+  {
+    name: 'CHECKOUT_MORNING',
+    startHour: 11,
+    startMinute: 30,
+    endHour: 12,
+    endMinute: 0,
+    description: 'Check-out Ca Sáng'
+  },
+  {
+    name: 'CHECKIN_AFTERNOON',
+    startHour: 13,
+    startMinute: 30,
+    endHour: 13,
+    endMinute: 45,
+    description: 'Check-in Ca Chiều'
+  },
+  {
+    name: 'CHECKOUT_AFTERNOON',
+    startHour: 17,
+    startMinute: 0,
+    endHour: 17,
+    endMinute: 30,
+    description: 'Check-out Ca Chiều'
+  },
+  {
+    name: 'OVERTIME_1',
+    startHour: 18,
+    startMinute: 0,
+    endHour: 19,
+    endMinute: 0,
+    description: 'Tăng ca (18h-19h)'
+  },
+  {
+    name: 'OVERTIME_2',
+    startHour: 20,
+    startMinute: 0,
+    endHour: 23,
+    endMinute: 0,
+    description: 'Tăng ca (20h-23h)'
+  }
+];
+
 export function useCountdown() {
-    const [timeLeft, setTimeLeft] = useState({ minutes: 0, seconds: 0 });
+  const [timeLeft, setTimeLeft] = useState({ minutes: 0, seconds: 0, description: '' });
 
-    useEffect(() => {
-        const calculateCountdown = () => {
-            const now = new Date();
-            const currentHour = now.getHours();
-            const currentMinute = now.getMinutes();
-            const currentSecond = now.getSeconds();
+  useEffect(() => {
+    const calculateCountdown = () => {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      const currentSecond = now.getSeconds();
+      
+      const currentTotalMinutes = currentHour * 60 + currentMinute;
 
-            let timeRemainingInSeconds = 0;
+      const currentRange = TIME_RANGES.find(range => {
+        const rangeStartMinutes = range.startHour * 60 + range.startMinute;
+        const rangeEndMinutes = range.endHour * 60 + range.endMinute;
+        return currentTotalMinutes >= rangeStartMinutes && currentTotalMinutes <= rangeEndMinutes;
+      });
 
-            if (currentHour === 8 && currentMinute <= 15) {
-                timeRemainingInSeconds = (15 - currentMinute) * 60 - currentSecond;
-            } else if (currentHour === 11 && currentMinute >= 30) {
-                timeRemainingInSeconds = (60 - currentMinute) * 60 - currentSecond;
-            } else if (currentHour === 13 && currentMinute >= 30 && currentMinute <= 45) {
-                timeRemainingInSeconds = (45 - currentMinute) * 60 - currentSecond;
-            } else if (currentHour === 17 && currentMinute >= 0 && currentMinute <= 30) {
-                timeRemainingInSeconds = (30 - currentMinute) * 60 - currentSecond;
-            }            
+      if (currentRange) {
+        const rangeEndMinutes = currentRange.endHour * 60 + currentRange.endMinute;
+        const timeRemainingInMinutes = rangeEndMinutes - currentTotalMinutes;
+        const timeRemainingInSeconds = timeRemainingInMinutes * 60 - currentSecond;
 
-            if (timeRemainingInSeconds > 0) {
-                const minutes = Math.floor(timeRemainingInSeconds / 60);
-                const seconds = timeRemainingInSeconds % 60;
-                setTimeLeft({ minutes, seconds });
-            } else {
-                setTimeLeft({ minutes: 0, seconds: 0 });
-            }
-        };
+        if (timeRemainingInSeconds > 0) {
+          setTimeLeft({
+            minutes: Math.floor(timeRemainingInSeconds / 60),
+            seconds: timeRemainingInSeconds % 60,
+            description: currentRange.description
+          });
+          return;
+        }
+      }
 
-        calculateCountdown();
+      setTimeLeft({ minutes: 0, seconds: 0, description: '' });
+    };
 
-        const interval = setInterval(calculateCountdown, 1000);
+    calculateCountdown();
+    const interval = setInterval(calculateCountdown, 1000);
 
-        return () => clearInterval(interval);
-    }, []);
+    return () => clearInterval(interval);
+  }, []);
 
-    return timeLeft;
+  return timeLeft;
 }

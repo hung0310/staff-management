@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UseToast } from '../../../../../hooks/ToastProvider';
 import { faCalendarCheck, faCloudArrowUp, faFileLines, faX } from '@fortawesome/free-solid-svg-icons';
-import { Send_Leave_Request } from '../../../../../apis/staffAPI';
+import { Get_Leave_Count, Send_Leave_Request } from '../../../../../apis/staffAPI';
 
 const loginSchemas = Yup.object().shape({
     date_start: Yup.string().required('⚠ Vui lòng chọn ngày'),
@@ -30,17 +30,25 @@ const LeaveApplication = () => {
         fileInputRef.current.value = null; 
     }
     
-    const handleSubmit = (values) => {
+    const handleSubmit = async (values) => {
         try {
-            const formData = new FormData();
-            formData.append('from_date', values.date_start.split('T')[0]);
-            formData.append('to_date', values.date_end.split('T')[0]);
-            formData.append('attachments', selectedFile);
-            formData.append('note', values.note);
 
-            const result = Send_Leave_Request(formData);
-
-            showToast("Yêu cầu của bạn đã được gửi!", "success");
+            const check = await Get_Leave_Count();
+            if(check.status === 200) {
+                if(check.data.leave_requests_count < 2) {
+                    const formData = new FormData();
+                    formData.append('from_date', values.date_start.split('T')[0]);
+                    formData.append('to_date', values.date_end.split('T')[0]);
+                    formData.append('attachments', selectedFile);
+                    formData.append('note', values.note);
+        
+                    const result = await Send_Leave_Request(formData);
+        
+                    showToast("Yêu cầu của bạn đã được gửi!", "success");
+                } else {
+                    showToast("Bạn đã hết phép xin nghỉ trong tháng này!", "error");
+                }
+            }
         } catch(error) {
             console.log(error);
         }

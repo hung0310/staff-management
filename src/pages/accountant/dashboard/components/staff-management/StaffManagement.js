@@ -89,6 +89,8 @@ const StaffManagement = () => {
                 const total = Math.ceil(result.data.totalRows / result.data.page_size);
                 setTotalPage(total);
                 setTotalRows(result.data.totalRows);
+                setNextPage(result.data.next_page);
+                setPreviousPage(result.data.previous_page);
                 setDataEmp(result.data.results || []);
             }
         } catch(error) {

@@ -12,12 +12,18 @@ import { Get_DropDown_Department, Get_Tracking_Time_Employee } from '../../../..
 
 const StaffSituation = () => {
     const [nextPage, setNextPage] = useState(null);
+    const [previousPage, setPreviousPage] = useState(null);
     const [totalPage, setTotalPage] = useState(0);
     const [totalRows, setTotalRows] = useState(0);
     const [departmentData, setDepartmentData] = useState([]);
     const [dataEmp, setDataEmp] = useState([]);
-  
+    const [departmentFile, setDepartmentFile] = useState('');
+    const [content, setContent] = useState('');
     const { currentPage, PaginationComponent } = useReactPaginate(totalPage, totalRows);
+
+    const handleBlur = (e) => {
+      setContent(e.target.innerText);
+    };
 
     useEffect(() => {
         try {
@@ -39,6 +45,7 @@ const StaffSituation = () => {
                 const result = await Get_Tracking_Time_Employee('', '');
                 if(result.status === 200) {
                     setNextPage(result.data.next_page);
+                    setPreviousPage(result.data.previous_page);
                     setDataEmp(result.data.results || []);
                 }
             }
@@ -50,11 +57,15 @@ const StaffSituation = () => {
 
     const handleChooseDepartment = async (e) => {
         try {
+            const nameFile = e.target.value.toUpperCase();
+            setDepartmentFile(nameFile);
             const result = await Get_Tracking_Time_Employee(e.target.value, currentPage);
             if(result.status === 200) {
                 const total = Math.ceil(result.data.totalRows / result.data.page_size);
                 setTotalPage(total);
                 setTotalRows(result.data.totalRows);
+                setNextPage(result.data.next_page);
+                setPreviousPage(result.data.previous_page);
                 setDataEmp(result.data.results || []);
             }
         } catch(error) {
@@ -67,7 +78,8 @@ const StaffSituation = () => {
             <div className={`${styles.request_staff_wrapper} `}>
                 <div className={`${styles.subtitle} `}>
                     <h3>Staff Management</h3>
-                    <ButtonExport totalCol={12} totalCheck={false} nameFile={'Staff_Situation_Report'} />
+                    <ButtonExport totalCol={9} totalCheck={false} 
+                        nameFile={departmentFile !== '' ? `BẢNG BÁO CÁO TÌNH HÌNH NHÂN SỰ BỘ PHẬN ${departmentFile}` : 'BẢNG BÁO CÁO TÌNH HÌNH NHÂN SỰ'} />
                 </div>
                 <div className={`${styles.select_department} `}>
                     <div className={`${styles.select_option} `}>
@@ -85,50 +97,50 @@ const StaffSituation = () => {
                         <table className={`${styles.custom_table} `} role='table'>
                             <thead>
                                 <tr>
-                                    <th>
-                                        <div className={`${styles.id_tb} `}>
-                                            <span> MÃ NHÂN VIÊN</span>
+                                    <th className={`${styles.id_tb} `}>
+                                        <div className={`${styles.title} `}>
+                                            <span>MSNV</span>
                                         </div>
                                     </th>
 
-                                    <th>
-                                        <div className={`${styles.item_tb} `}>
+                                    <th className={`${styles.item_tb} `}>
+                                        <div className={`${styles.title} `}>
                                             <span>BỘ PHẬN NHÂN SỰ</span>
                                         </div>
                                     </th>
 
-                                    <th>
-                                        <div className={`${styles.name_tb} `}>
+                                    <th className={`${styles.name_tb} `}>
+                                        <div className={`${styles.title} `}>
                                             <span>TÊN NHÂN VIÊN</span>
                                         </div>
                                     </th>
 
-                                    <th>
-                                        <div className={`${styles.day_tb} `}>
-                                            <span>NGÀY CÔNG TRONG THÁNG</span>
+                                    <th className={`${styles.day_tb} `}>
+                                        <div className={`${styles.title} `}>
+                                            <span>NGÀY CÔNG</span>
                                         </div>
                                     </th>
 
-                                    <th>
-                                        <div className={`${styles.hour_tb} `}>
+                                    <th className={`${styles.hour_tb} `}>
+                                        <div className={`${styles.title} `}>
                                             <span>GIỜ LÀM CHÍNH</span>
                                         </div>
                                     </th>
 
-                                    <th>
-                                        <div className={`${styles.hour_tb} `}>
+                                    <th className={`${styles.hour_tb} `}>
+                                        <div className={`${styles.title} `}>
                                             <span>GIỜ LÀM THÊM</span>
                                         </div>
                                     </th>
 
-                                    <th>
-                                        <div className={`${styles.day_off_tb} `}>
+                                    <th className={`${styles.day_off_tb} `}>
+                                        <div className={`${styles.title} `}>
                                             <span>NGÀY NGHỈ PHÉP</span>
                                         </div>
                                     </th>
 
-                                    <th>
-                                        <div className={`${styles.total_tb} `}>
+                                    <th className={`${styles.total_tb} `}>
+                                        <div className={`${styles.title} `}>
                                             <span>TỔNG SỐ GIỜ LÀM</span>
                                         </div>
                                     </th>
@@ -137,16 +149,16 @@ const StaffSituation = () => {
                                         <div className={`${styles.status} `}>
                                             <span>TÌNH TRẠNG CHẤM CÔNG</span>
                                         </div>
-                                    </th>
-
-                                    <th>
-                                        <div className={`${styles.evalute_tb} `}>
-                                            <span>ĐÁNH GIÁ</span>
-                                        </div>
                                     </th> */}
 
-                                    <th>
-                                        <div className={`${styles.note_tb} `}>
+                                    <th className={`${styles.evalute_tb} `}>
+                                        <div className={`${styles.title} `}>
+                                            <span>ĐÁNH GIÁ</span>
+                                        </div>
+                                    </th>
+
+                                    <th className={`${styles.note_tb} `}>
+                                        <div className={`${styles.title} `}>
                                             <span>GHI CHÚ</span>
                                         </div>
                                     </th>
@@ -160,13 +172,13 @@ const StaffSituation = () => {
                                         <tbody key={index}>
                                             <tr>
                                                 <td>
-                                                    <span style={{ color: '#F19828', fontWeight: '500' }}>{item.employee_id}</span>
+                                                    <span style={{ color: '#F19828', fontWeight: '500' }}>{item.employee.employee_id}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.department}</span>
+                                                    <span>{item.employee.department}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.full_name}</span>
+                                                    <span>{item.employee.full_name}</span>
                                                 </td>
                                                 <td>
                                                     <span>{item.working_days ?? 0}</span>
@@ -185,10 +197,16 @@ const StaffSituation = () => {
                                                 </td>   
                                                 {/* <td>
                                                     <span>{item.status}</span>
-                                                </td>   
-                                                <td>
-                                                    <span>{item.evalute}</span>
                                                 </td>    */}
+                                                <td>
+                                                    <TextareaAutosize
+                                                        className={`${styles.textarea_evalute} `}
+                                                        minRows={1}
+                                                        maxRows={2}
+                                                        placeholder="..."
+                                                        value={item.content}
+                                                    />
+                                                </td>    
                                                 <td>
                                                     <TextareaAutosize
                                                         minRows={1}
@@ -214,7 +232,7 @@ const StaffSituation = () => {
                 </div>
             </div>
 
-            {nextPage !== null ?
+            {nextPage && previousPage !== null ?
                 <div className={`${styles.paginnate} mt-5`}>
                     <PaginationComponent/>
                 </div>

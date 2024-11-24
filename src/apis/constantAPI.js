@@ -31,3 +31,4 @@ export const current_month_timesheet = `${base_url}/timesheet/get_current_month_
 export const list_employee = `${base_url}/employee/get_all_employees_of_deparment/`;
 export const tracking_time_emp = `${base_url}/timesheet/get_tracking_time_employee/`;
 export const salary_month = `${base_url}/salary/get_current_month_salary_records/`;
+export const leave_count = `${base_url}/timesheet/get_leave_count_in_current_month/`;

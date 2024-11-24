@@ -1,7 +1,6 @@
 import React from 'react';
 import * as XLSX from 'xlsx';
 import styles from './ButtonExport.module.scss';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
@@ -26,10 +25,12 @@ const ButtonExport = ({ start, end, totalCol, nameFile, totalCheck }) => {
       });
     });
 
+    // Lấy hàng tổng trực tiếp từ bảng
     const footerRow = table.querySelector('tfoot tr');
-    const totals = footerRow ? Array.from(footerRow.querySelectorAll('td span')).map(td => 
-      td.textContent.trim()
-    ) : [];
+    const totals = footerRow ? Array.from(footerRow.querySelectorAll('td')).map(td => {
+      const span = td.querySelector('span');
+      return span ? span.textContent.trim() : '';
+    }) : [];
 
     return {
       headers,
@@ -38,39 +39,21 @@ const ButtonExport = ({ start, end, totalCol, nameFile, totalCheck }) => {
     };
   };
 
-  const calculateColumnTotals = (data) => {
-    const numericColumns = Array.from({ length: end - start + 1 }, (_, i) => start + i);
-    const totals = Array(totalCol).fill('');
-    
-    totals[1] = 'TOTAL'; 
-
-    numericColumns.forEach(colIndex => {
-      const columnSum = data.reduce((sum, row) => {
-        const value = parseFloat(row[colIndex]?.replace(/[^0-9.-]+/g, '') || 0);
-        return sum + value;
-      }, 0);
-      totals[colIndex] = columnSum.toString();
-    });
-
-    return totals;
-  };
-
   const exportToExcel = () => {
-    const { headers, data } = getTableData();
-    let totals;
-    if(totalCheck) {
-      totals = calculateColumnTotals(data);
-    }
+    const { headers, data, totals } = getTableData();
     
+    // Tạo worksheet với dữ liệu đã có
     const ws = XLSX.utils.aoa_to_sheet([
       headers,
       ...data,
-      totals
+      ...(totalCheck ? [totals] : [])
     ]);
 
+    // Định dạng cột
     const colWidths = headers.map(() => ({ wch: 15 }));
     ws['!cols'] = colWidths;
 
+    // Định dạng header
     const range = XLSX.utils.decode_range(ws['!ref']);
     for (let C = range.s.c; C <= range.e.c; ++C) {
       const address = XLSX.utils.encode_cell({ r: 0, c: C });
@@ -82,14 +65,18 @@ const ButtonExport = ({ start, end, totalCol, nameFile, totalCheck }) => {
       };
     }
 
-    const lastRow = range.e.r;
-    for (let C = range.s.c; C <= range.e.c; ++C) {
-      const address = XLSX.utils.encode_cell({ r: lastRow, c: C });
-      if (!ws[address]) continue;
-      ws[address].s = {
-        font: { color: { rgb: "FFFFFF" }, bold: true },
-        fill: { fgColor: { rgb: "000000" } },
-      };
+    // Định dạng hàng tổng
+    if (totalCheck) {
+      const lastRow = range.e.r;
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const address = XLSX.utils.encode_cell({ r: lastRow, c: C });
+        if (!ws[address]) continue;
+        ws[address].s = {
+          font: { bold: true },
+          fill: { fgColor: { rgb: "000000" } },
+          font: { color: { rgb: "FFFFFF" }, bold: true },
+        };
+      }
     }
 
     const wb = XLSX.utils.book_new();

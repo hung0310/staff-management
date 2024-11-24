@@ -7,7 +7,7 @@ import { faEye } from '@fortawesome/free-solid-svg-icons';
 import NoResult from '../../../../../common/NoResult/NoResult';
 import { useReactPaginate } from '../../../../../common/Pagination/useReactPaginate';
 import ButtonExport from '../../../../../components/ButtonExport/ButtonExport';
-import { Get_DropDown_Department, Get_Salary_Month } from '../../../../../apis/staffAPI';
+import { Get_DropDown_Department, Get_Salary_Month, Get_Tracking_Time_Employee } from '../../../../../apis/staffAPI';
 
 const Salary = () => {
     const [totalPage, setTotalPage] = useState(0);
@@ -15,9 +15,14 @@ const Salary = () => {
     const [departmentData, setDepartmentData] = useState([]);
     const [nextPage, setNextPage] = useState(null);
     const [previousPage, setPreviousPage] = useState(null);
-    const { currentPage, PaginationComponent } = useReactPaginate(totalPage);
+    const { currentPage, PaginationComponent } = useReactPaginate(totalPage, totalRows);
     const [dataSalary, setDataSalary] = useState([]);
     const [monthChoose, setMonthChoose] = useState('');
+    const [departmentChoose, setDepartmentChoose] = useState('');
+    const [dataMain, setDataMain] = useState([]);
+    const date = new Date();
+    const currentMonth = date.getMonth() + 1;
+    const currentYear = date.getFullYear();
 
     useEffect(() => {
         try {
@@ -36,34 +41,102 @@ const Salary = () => {
     useEffect(() => {
         try {
             const fetchData = async () => {
-                const result = await Get_Salary_Month('', '', '', '');
-                if(result.status === 200) {
-                    setNextPage(result.data.next_page);
-                    setPreviousPage(result.data.previous_page);
-                    setDataSalary(result.data.results || []);
+                const result1 = await Get_Salary_Month('', currentMonth, currentYear, '');
+                const result2 = await Get_Tracking_Time_Employee('', '');
+                if(result1.status === 200 && result2.status === 200) {
+                    const salaryData = result1.data.results || [];
+                    const trackingData = result2.data.results || [];
+
+                    const mergeData = salaryData.map((salary)=> {
+                        const tracking = trackingData.find(
+                            (track) => track.employee?.employee_id === salary.employee?.employee_id
+                        )
+
+                        return {
+                            employee_id: salary.employee?.employee_id,
+                            full_name: salary.employee?.full_name,
+                            department: salary.employee?.department,
+                            base_salary: salary?.base_salary,
+                            overtime_pay: salary?.overtime_pay,
+                            attendance_bonus: salary?.attendance_bonus,
+                            gross_salary: salary?.gross_salary,
+                            working_days: tracking?.working_days || 0,
+                            regular_hours: tracking?.regular_hours || 0,
+                            overtime_hours: tracking?.overtime_hours || 0,
+                            leave_days: tracking?.leave_days || 0,
+                        };
+                    });
+
+                    setDataMain(mergeData);
+                    console.log(">>> SalaryData: ", salaryData);
+                    console.log(">>> TrakingData: ", trackingData);
+                    console.log("MergeData: ", mergeData);
+                    setNextPage(result1.data.next_page);
+                    setPreviousPage(result1.data.previous_page);
                 }
             }
             fetchData();
         } catch(error) {
             console.log(error);
         }
-    }, []);
+    }, [currentMonth, currentYear]);
 
-    const handleChooseDepartment = async (e) => {
-        try {
-            
-        } catch(error) {
-            console.log(error);
-        }
+    const handleChooseDepartment = (e) => {
+        const selectedDepartment = e.target.value;
+        setDepartmentChoose(selectedDepartment);
     }
 
-    const handleChooseMonth = async (e) => {
-        try {
-            const selectedMonth = e.target.value;
-            setMonthChoose(selectedMonth);
-        } catch (error) {
-            console.log(error);
+    const handleChooseMonth = (e) => {
+        const selectedMonth = e.target.value;
+        setMonthChoose(selectedMonth);
+    };
+
+    useEffect(() => {
+        if(departmentChoose !== '' && monthChoose !== '' ) {
+            const fetchData = async () => {
+                const result1 = await Get_Salary_Month(departmentChoose, monthChoose, currentYear, currentPage);
+                const result2 = await Get_Tracking_Time_Employee('', '');
+                if(result1.status === 200 && result2.status === 200) {
+                    const salaryData = result1.data.results || [];
+                    const trackingData = result2.data.results || [];
+
+                    const mergeData = salaryData.map((salary)=> {
+                        const tracking = trackingData.find(
+                            (track) => track.employee?.employee_id === salary.employee?.employee_id
+                        )
+
+                        return {
+                            employee_id: salary.employee?.employee_id,
+                            full_name: salary.employee?.full_name,
+                            department: salary.employee?.department,
+                            base_salary: salary?.base_salary,
+                            overtime_pay: salary?.overtime_pay,
+                            attendance_bonus: salary?.attendance_bonus,
+                            gross_salary: salary?.gross_salary,
+                            working_days: tracking?.working_days || 0,
+                            regular_hours: tracking?.regular_hours || 0,
+                            overtime_hours: tracking?.overtime_hours || 0,
+                            leave_days: tracking?.leave_days || 0,
+                        };
+                    });
+
+                    setDataMain(mergeData);
+                    console.log(">>> SalaryData: ", salaryData);
+                    console.log(">>> TrakingData: ", trackingData);
+                    console.log("MergeData: ", mergeData);
+                    const total = Math.ceil(result1.data.totalRows / result1.data.page_size);
+                    setTotalPage(total);
+                    setTotalRows(result1.data.totalRows);
+                    setNextPage(result1.data.next_page);
+                    setPreviousPage(result1.data.previous_page);
+                }
+            }
+            fetchData();          
         }
+    }, [departmentChoose, monthChoose, currentMonth, currentYear, currentPage]);
+
+    const roundNumber = (num, decimals = 2) => {
+        return Number(Math.round(num + 'e' + decimals) + 'e-' + decimals);
     };
 
     return (
@@ -71,13 +144,21 @@ const Salary = () => {
             <div className={`${styles.request_staff_wrapper} `}>
                 <div className={`${styles.subtitle} `}>
                     <h3>BẢNG TỔNG KẾT LƯƠNG</h3>
-                    <ButtonExport start={3} end={7} totalCol={8} totalCheck={true} nameFile={`BẢNG BÁO CÁO LƯƠNG THÁNG ${monthChoose}`} />
+                    <ButtonExport start={3} end={9} totalCol={10} totalCheck={true} 
+                        nameFile={
+                            monthChoose !== '' && departmentChoose !== ''
+                            ?
+                            `BẢNG BÁO CÁO LƯƠNG THÁNG ${monthChoose} BỘ PHẬN ${departmentChoose.toUpperCase()}`
+                            :
+                            `BẢNG BÁO CÁO LƯƠNG THÁNG ${currentMonth} NĂM ${currentYear}`
+                        } 
+                    />
                 </div>
                 <div className='d-flex gap-5'>
                     <div className={`${styles.select_department} `}>
                         <div className={`${styles.select_option} `}>
                             <select name="name-of-select" id="id-of-select" onChange={handleChooseDepartment}>
-                                <option value="" disabled selected>Bộ phận nhân sự</option>
+                                <option value="" disabled selected>Bộ phận làm việc</option>
                                 {departmentData.map((item, index) => (
                                     <option value={item.name} key={index}>{item.name}</option>
                                 ))}
@@ -112,7 +193,7 @@ const Salary = () => {
 
                                     <th className={`${styles.depart_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>BỘ PHẬN NHÂN SỰ</span>
+                                            <span>BỘ PHẬN</span>
                                         </div>
                                     </th>
 
@@ -166,39 +247,42 @@ const Salary = () => {
                                 </tr>
                             </thead>
 
-                            {dataSalary.length > 0 ?
+                            {dataMain.length > 0 ?
                             <>
-                                {dataSalary.map((item, index) => {
+                                {dataMain.map((item) => {
                                     return (
-                                        <tbody key={index}>
+                                        <tbody key={item.employee_id}>
                                             <tr>
                                                 <td>
-                                                    <span style={{ color: '#F19828', fontWeight: '500', fontSize: '12px' }}>{item.em_id}</span>
+                                                    <span style={{ color: '#F19828', fontWeight: '500', fontSize: '12px' }}>{item.employee_id}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.em_item}</span>
+                                                    <span>{item.department}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.em_name}</span>
+                                                    <span>{item.full_name}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.regular}</span>
+                                                    <span>{item.regular_hours}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.overtime}</span>
+                                                    <span>{item.base_salary}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.total_hour}</span>
+                                                    <span>{item.overtime_hours}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{item.day_off}</span>
+                                                    <span>{item.overtime_pay}</span>
                                                 </td>    
                                                 <td>
-                                                    <span>{item.bonuses}</span>
+                                                    <span>{item.attendance_bonus}</span>
                                                 </td>    
                                                 <td>
-                                                    <span>{item.salary}</span>
-                                                </td>                                      
+                                                    <span>{(+item.regular_hours || 0) + (+item.overtime_hours || 0)}</span>
+                                                </td>  
+                                                <td>
+                                                    <span>{item.gross_salary}</span>
+                                                </td>                                     
                                             </tr>
                                         </tbody> 
                                     )                               
@@ -215,22 +299,25 @@ const Salary = () => {
                                             <span></span>
                                         </td>
                                         <td>
-                                            <span>TOTAL</span>
+                                            <span>{roundNumber(dataMain.reduce((total, item) => total + (parseFloat(item.regular_hours) || 0), 0))}</span>
                                         </td>
                                         <td>
-                                            <span>TOTAL</span>
+                                            <span>{roundNumber(dataMain.reduce((total, item) => total + (parseFloat(item.base_salary) || 0), 0))}</span>
                                         </td>
                                         <td>
-                                            <span>TOTAL</span>
+                                            <span>{roundNumber(dataMain.reduce((total, item) => total + (parseFloat(item.overtime_hours) || 0), 0))}</span>
                                         </td>
                                         <td>
-                                            <span>TOTAL</span>
+                                            <span>{roundNumber(dataMain.reduce((total, item) => total + (parseFloat(item.overtime_pay) || 0), 0))}</span>
                                         </td>
                                         <td>
-                                            <span>TOTAL</span>
+                                            <span>{roundNumber(dataMain.reduce((total, item) => total + (parseFloat(item.attendance_bonus) || 0), 0))}</span>
                                         </td>
                                         <td>
-                                            <span>TOTAL</span>
+                                            <span>{roundNumber(dataMain.reduce((total, item) => total + (parseFloat(item.regular_hours) || 0) + (parseFloat(item.overtime_hours) || 0), 0))}</span>
+                                        </td>
+                                        <td>
+                                            <span>{roundNumber(dataMain.reduce((total, item) => total + (parseFloat(item.gross_salary) || 0), 0))}</span>
                                         </td>
                                     </tr>
                                 </tfoot>

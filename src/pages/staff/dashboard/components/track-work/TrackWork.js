@@ -26,7 +26,7 @@ const TrackWork = ({setSelectedContent}) => {
 
     const SetTime = async (hour, minitue) => {
         const totalMinitues = hour * 60 + minitue;
-
+        let status = true;
         let result;
 
         if(totalMinitues >= (15 * 60 + 30) && totalMinitues <= (16 * 60)) {
@@ -53,7 +53,7 @@ const TrackWork = ({setSelectedContent}) => {
             }         
         }
 
-        if(totalMinitues >= (18 * 60)) {
+        if(totalMinitues >= (18 * 60) && totalMinitues <= (19 * 60)) {
             try {
                 result = await CheckInOvertime();
             } catch(error) {
@@ -61,7 +61,7 @@ const TrackWork = ({setSelectedContent}) => {
             }           
         }
 
-        if(totalMinitues <= (23 * 60)) {
+        if(totalMinitues >= (20 * 60) && totalMinitues <= (23 * 60)) {
             try {
                 result = await CheckOutOvertime();
             } catch(error) {
@@ -101,6 +101,9 @@ const TrackWork = ({setSelectedContent}) => {
                     console.log(error);
                 }     
             }
+
+            if((totalMinitues >= (11 * 60 + 30) && totalMinitues <= (12 * 60)) || (totalMinitues >= (17 * 60) && totalMinitues <= (17 * 60 + 30)))
+                status = false;
         }
 
         if(result?.status === 200) {
@@ -108,6 +111,8 @@ const TrackWork = ({setSelectedContent}) => {
             setStatusButton(true);
         } else {
             showToast("Bạn đã chấm công ca này rồi!", "error");
+            if(!status)
+                showToast("Bạn đã hết phép về sớm trong tháng này!", "error");
             setStatusButton(true);
         }
     }
@@ -130,6 +135,7 @@ const TrackWork = ({setSelectedContent}) => {
             const result = await Get_Daily_Timesheet();
             if(result.status === 200) {
                 setDailyTimesheet(result.data);
+                setCountOutDay(result.data.early_leave_count);
             }
         } catch(error) {
             console.log(error);
@@ -162,7 +168,8 @@ const TrackWork = ({setSelectedContent}) => {
                 (totalMinutes >= 11 * 60 + 30 && totalMinutes <= 12 * 60) ||
                 (totalMinutes >= 13 * 60 + 30 && totalMinutes <= 13 * 60 + 45) ||
                 (totalMinutes >= 17 * 60 && totalMinutes <= 17 * 60 + 30) ||
-                (totalMinutes >= 18 * 60 && totalMinutes <= 23 * 60)
+                (totalMinutes >= 18 * 60 && totalMinutes <= 19 * 60) ||
+                (totalMinutes >= 20 * 60 && totalMinutes <= 23 * 60)
             ) {
                 setStatusButton(false);
             } else {
@@ -172,7 +179,7 @@ const TrackWork = ({setSelectedContent}) => {
         checkTime();
         const interval = setInterval(checkTime, 60 * 1000);
         return () => clearInterval(interval);
-    }, [setStatusButton]);
+    }, [statusButton, setStatusButton]);
 
     return (
         <div className={`${styles.timesheet} `}>
@@ -185,7 +192,7 @@ const TrackWork = ({setSelectedContent}) => {
 
                     <div className={`${styles.custom_btn} `}>
                         {minutes > 0 || seconds > 0 ? (
-                            <span>Time: {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}</span>
+                            <span>Thời gian còn lại: {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}</span>
                         ) : (
                             <span style={{ color: 'red' }}>Quá giờ chấm công!</span>
                         )}
@@ -346,10 +353,10 @@ const TrackWork = ({setSelectedContent}) => {
                                         <span>{dailyTimesheet?.afternoon_shift !== null ? dailyTimesheet.afternoon_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
-                                        <span>{dailyTimesheet?.overtime_shift !== null ? dailyTimesheet.overtime_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                        <span>{dailyTimesheet?.overtime_shift !== null ? dailyTimesheet.overtime_shift?.check_in_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
-                                        <span>{dailyTimesheet?.overtime_shift !== null ? dailyTimesheet.overtime_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                        <span>{dailyTimesheet?.overtime_shift !== null ? dailyTimesheet.overtime_shift?.check_out_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     {/* <td>
                                         <span></span>

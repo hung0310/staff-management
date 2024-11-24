@@ -213,7 +213,7 @@ const Sidebar = () => {
                             </div>
 
                             <div className={`${styles.function_nav}`}>
-                                <div className={`${styles.search_tab} d-flex`}>
+                                {/* <div className={`${styles.search_tab} d-flex`}>
                                     <input
                                         className={`${styles.input_search}`}
                                         placeholder='Tìm kiếm ...'
@@ -222,7 +222,7 @@ const Sidebar = () => {
                                     <div className={`${styles.look_up} `}>
                                         <FontAwesomeIcon icon={faMagnifyingGlass} width={16} height={16}/>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className={`${styles.custom_ico}`}>
                                     <FontAwesomeIcon ref={buttonRef} icon={faBars} className={`${styles.ico_bars}`} onClick={handleShow} />
                                     <FontAwesomeIcon icon={faRightFromBracket} onClick={handleLogout}/>

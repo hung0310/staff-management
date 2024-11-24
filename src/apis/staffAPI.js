@@ -106,9 +106,13 @@ export const Get_List_Employee = (department, page) => {
 }
 
 export const Get_Tracking_Time_Employee = (department, page) => {
-    return apiService.get(`${url.list_employee}?department=${department}&page=${page}`);
+    return apiService.get(`${url.tracking_time_emp}?department=${department}&page=${page}`);
 }
 
 export const Get_Salary_Month = (department, month, year, page) => {
-    return apiService.get(`${url.list_employee}?department=${department}&month=${month}&year=${year}&page=${page}`);
+    return apiService.get(`${url.salary_month}?department=${department}&month=${month}&year=${year}&page=${page}`);
+}
+
+export const Get_Leave_Count = () => {
+    return apiService.get(url.leave_count);
 }
