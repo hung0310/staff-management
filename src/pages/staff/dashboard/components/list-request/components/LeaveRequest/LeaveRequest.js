@@ -11,6 +11,8 @@ const LeaveRequest = () => {
     const [dataLeave, setDataLeave] = useState([]);
     const [totalPage, setTotalPage] = useState(0);
     const [totalRows, setTotalRows] = useState(0);
+    const [nextPage, setNextPage] = useState(null);
+    const [previousPage, setPreviousPage] = useState(null);
   
     const { currentPage, PaginationComponent } = useReactPaginate(totalPage, totalRows);
 
@@ -23,6 +25,8 @@ const LeaveRequest = () => {
                     const total = Math.ceil(result.data.totalRows / result.data.page_size);
                     setTotalPage(total);
                     setTotalRows(result.data.totalRows);
+                    setNextPage(result.data.next_page);
+                    setPreviousPage(result.data.previous_page);
                     setDataLeave(result.data.results || []);
                 }
             } catch(error) {
@@ -126,9 +130,13 @@ const LeaveRequest = () => {
                         </table>
                     </div>
                 </div>
-                <div className={`${styles.paginnate} mt-5`}>
-                    <PaginationComponent/>
-                </div>
+                {nextPage && previousPage !== null ?
+                    <div className={`${styles.paginnate} mt-5`}>
+                        <PaginationComponent/>
+                    </div>
+                :
+                    <></>
+                }
             </div>
         </div>
     );

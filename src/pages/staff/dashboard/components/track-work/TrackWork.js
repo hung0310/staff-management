@@ -3,7 +3,7 @@ import styles from './TrackWork.module.scss'
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useCountdown } from '../../../../../hooks/useCountDown';
-import { CheckIn, CheckInOvertime, CheckOut, CheckOutOvertime, Get_Daily_Timesheet } from '../../../../../apis/staffAPI';
+import { CheckIn, CheckInOvertime, CheckOut, CheckOutOvertime, Get_Daily_Timesheet, Get_Profile_Emp } from '../../../../../apis/staffAPI';
 import { UseToast } from '../../../../../hooks/ToastProvider';
 
 const TrackWork = ({setSelectedContent}) => {
@@ -22,6 +22,7 @@ const TrackWork = ({setSelectedContent}) => {
     const { showToast } = UseToast();
     const [dateNow, setDateNow] = useState('');
     const [statusButton, setStatusButton] = useState(false);
+    const [dataProfile, setDataProfile] = useState({});
     const { minutes, seconds } = useCountdown();
 
     const SetTime = async (hour, minitue) => {
@@ -142,7 +143,18 @@ const TrackWork = ({setSelectedContent}) => {
         }
     }
 
+    const fetchDataProfile = async () => {
+        try {
+            const result = await Get_Profile_Emp();
+            if(result.status === 200)
+                setDataProfile(result.data);
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
+        fetchDataProfile();
         fetchDailyTimeSheet();
     }, []);
 
@@ -150,6 +162,8 @@ const TrackWork = ({setSelectedContent}) => {
         const checkTime = () => {
             const date = new Date();
             const totalMinutes = date.getHours() * 60 + date.getMinutes();
+            const dayOfWeek = date.getDay();
+
             if(totalMinutes >= 8 * 60 && totalMinutes <= 11 * 60 + 30) {
                 setColorMorning(true);
             } else if(totalMinutes >= 13 * 60 + 30 && totalMinutes <= 17 * 60 + 30) {
@@ -162,19 +176,22 @@ const TrackWork = ({setSelectedContent}) => {
                 setColorOvertime(false);
             }
 
-            if (
-                (totalMinutes >= 8 * 60 && totalMinutes <= 8 * 60 + 15) ||
-                (totalMinutes >= 15 * 60 + 30 && totalMinutes <= 16 * 60) ||
-                (totalMinutes >= 11 * 60 + 30 && totalMinutes <= 12 * 60) ||
-                (totalMinutes >= 13 * 60 + 30 && totalMinutes <= 13 * 60 + 45) ||
-                (totalMinutes >= 17 * 60 && totalMinutes <= 17 * 60 + 30) ||
-                (totalMinutes >= 18 * 60 && totalMinutes <= 19 * 60) ||
-                (totalMinutes >= 20 * 60 && totalMinutes <= 23 * 60)
-            ) {
-                setStatusButton(false);
-            } else {
+            if(dayOfWeek !== 0 && (dayOfWeek !== 6 || (totalMinutes >= 13 * 60 + 30))) {
+                if (
+                    (totalMinutes >= 8 * 60 && totalMinutes <= 8 * 60 + 15) ||
+                    (totalMinutes >= 15 * 60 + 30 && totalMinutes <= 16 * 60) ||
+                    (totalMinutes >= 11 * 60 + 30 && totalMinutes <= 12 * 60) ||
+                    (totalMinutes >= 13 * 60 + 30 && totalMinutes <= 13 * 60 + 45) ||
+                    (totalMinutes >= 17 * 60 && totalMinutes <= 17 * 60 + 30) ||
+                    (totalMinutes >= 18 * 60 && totalMinutes <= 19 * 60) ||
+                    (totalMinutes >= 20 * 60 && totalMinutes <= 23 * 60)
+                ) {
+                    setStatusButton(false);
+                } else {
+                    setStatusButton(true);
+                }                
+            } else 
                 setStatusButton(true);
-            }
         };
         checkTime();
         const interval = setInterval(checkTime, 60 * 1000);
@@ -186,8 +203,8 @@ const TrackWork = ({setSelectedContent}) => {
             <div className={`${styles.timesheet_container} `}>
                 <div className={`${styles.header_timesheet} `}>
                     <div className={`${styles.info_employ} `}>
-                        <span><strong>Tên nhân viên: </strong>Nguyễn Văn A</span>
-                        <span><strong>Bộ phận nhân sự: </strong>Chuyên viên tư vấn</span>
+                        <span><strong>Tên nhân viên: </strong>{dataProfile.full_name}</span>
+                        <span><strong>Phòng ban: </strong>{dataProfile.department}</span>
                     </div>
 
                     <div className={`${styles.custom_btn} `}>

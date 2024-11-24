@@ -12,6 +12,7 @@ const LeaveRequest = () => {
     const { showToast } = UseToast();
     const [dataLeave, setDataLeave] = useState([]);
     const [nextPage, setNextPage] = useState(null);
+    const [previousPage, setPreviousPage] = useState(null);
     const [totalPage, setTotalPage] = useState(0);
     const [totalRows, setTotalRows] = useState(0);
     const [contentModal, setContentModal] = useState('');
@@ -28,6 +29,7 @@ const LeaveRequest = () => {
             if(result.status === 200) {
                 const total = Math.ceil(result.data.totalRows / result.data.page_size);
                 setNextPage(result.data.next_page);
+                setPreviousPage(result.data.previous_page);
                 setTotalPage(total);
                 setTotalRows(result.data.totalRows);
                 setDataLeave(result.data.results || []);
@@ -218,7 +220,7 @@ const LeaveRequest = () => {
                         </table>
                     </div>
                 </div>
-                {nextPage !== null ?
+                {nextPage && previousPage !== null ?
                     <div className={`${styles.paginnate} mt-5`}>
                         <PaginationComponent/>
                     </div>

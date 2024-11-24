@@ -105,7 +105,7 @@ const StaffSituation = () => {
 
                                     <th className={`${styles.item_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>BỘ PHẬN NHÂN SỰ</span>
+                                            <span>PHÒNG BAN</span>
                                         </div>
                                     </th>
 

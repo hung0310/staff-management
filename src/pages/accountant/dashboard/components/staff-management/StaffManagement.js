@@ -138,7 +138,7 @@ const StaffManagement = () => {
 
                                     <th className={`${styles.depart_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>BỘ PHẬN LÀM VIỆC</span>
+                                            <span>PHÒNG BAN</span>
                                         </div>
                                     </th>
 

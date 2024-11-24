@@ -50,7 +50,7 @@ const ManageProfile = () => {
             const data = {
                 full_name: values.full_name,
                 date_of_birth: values.date.split('T')[0],
-                gender: values.gender ? 'Nam' : 'Nữ',
+                gender: values.gender === 'True' ? 'Nam' : 'Nữ',
                 address: values.address,
                 phone_number: values.phone_number,
                 email: values.email,
@@ -195,7 +195,7 @@ const ManageProfile = () => {
 
                                             <div className='d-flex gap-3'>
                                                 <div className='w-100' style={{ height: '90px'}}>
-                                                    <span className='fw-bold pt-2' style={{ color: "#293749", fontSize: '13px', width: '130px' }}>Bộ phận nhân sự:</span>
+                                                    <span className='fw-bold pt-2' style={{ color: "#293749", fontSize: '13px', width: '130px' }}>Phòng ban:</span>
                                                     <div className='w-100'>
                                                         <Field type="text" name="department" className="form-control" readOnly/> 
                                                     </div>
