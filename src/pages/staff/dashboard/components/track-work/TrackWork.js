@@ -30,14 +30,6 @@ const TrackWork = ({setSelectedContent}) => {
         let status = true;
         let result;
 
-        if(totalMinitues >= (15 * 60 + 30) && totalMinitues <= (16 * 60)) {
-            try {
-                result = await CheckIn({'shift_type': 'AFTERNOON'});
-            } catch(error) {
-                console.log(error);
-            }         
-        }
-
         if(totalMinitues >= (8 * 60) && totalMinitues <= (8 * 60 + 15)) {
             try {
                 result = await CheckIn({'shift_type': 'MORNING'});
@@ -179,7 +171,6 @@ const TrackWork = ({setSelectedContent}) => {
             if(dayOfWeek !== 0 && (dayOfWeek !== 6 || (totalMinutes >= 13 * 60 + 30))) {
                 if (
                     (totalMinutes >= 8 * 60 && totalMinutes <= 8 * 60 + 15) ||
-                    (totalMinutes >= 15 * 60 + 30 && totalMinutes <= 16 * 60) ||
                     (totalMinutes >= 11 * 60 + 30 && totalMinutes <= 12 * 60) ||
                     (totalMinutes >= 13 * 60 + 30 && totalMinutes <= 13 * 60 + 45) ||
                     (totalMinutes >= 17 * 60 && totalMinutes <= 17 * 60 + 30) ||
@@ -358,16 +349,16 @@ const TrackWork = ({setSelectedContent}) => {
                                         <span>{dateNow}</span>
                                     </td>
                                     <td>
-                                        <span>{dailyTimesheet?.morning_shift !== null ? dailyTimesheet.morning_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                        <span>{dailyTimesheet?.morning_shift !== null ? dailyTimesheet.morning_shift?.check_in_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
-                                        <span>{dailyTimesheet?.morning_shift !== null ? dailyTimesheet.morning_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                        <span>{dailyTimesheet?.morning_shift !== null ? dailyTimesheet.morning_shift?.check_out_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
-                                        <span>{dailyTimesheet?.afternoon_shift !== null ? dailyTimesheet.afternoon_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                        <span>{dailyTimesheet?.afternoon_shift !== null ? dailyTimesheet.afternoon_shift?.check_in_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
-                                        <span>{dailyTimesheet?.afternoon_shift !== null ? dailyTimesheet.afternoon_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                        <span>{dailyTimesheet?.afternoon_shift !== null ? dailyTimesheet.afternoon_shift?.check_out_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                     </td>
                                     <td>
                                         <span>{dailyTimesheet?.overtime_shift !== null ? dailyTimesheet.overtime_shift?.check_in_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>

@@ -130,22 +130,22 @@ const DetailTimesheet = () => {
                                                 <span>{item.date.split('-').reverse().join('/')}</span>
                                             </td>
                                             <td>
-                                                <span>{item?.morning_shift !== null ? item.morning_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                                <span>{item?.morning_shift !== null ? item.morning_shift?.check_in_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                             </td>
                                             <td>
-                                                <span>{item?.morning_shift !== null ? item.morning_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                                <span>{item?.morning_shift !== null ? item.morning_shift?.check_out_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                             </td>
                                             <td>
-                                                <span>{item?.afternoon_shift !== null ? item.afternoon_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                                <span>{item?.afternoon_shift !== null ? item.afternoon_shift?.check_in_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                             </td>
                                             <td>
-                                                <span>{item?.afternoon_shift !== null ? item.afternoon_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                                <span>{item?.afternoon_shift !== null ? item.afternoon_shift?.check_out_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                             </td>
                                             <td>
-                                                <span>{item?.overtime_shift !== null ? item.overtime_shift?.check_in_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                                <span>{item?.overtime_shift !== null ? item.overtime_shift?.check_in_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                             </td>
                                             <td>
-                                                <span>{item?.overtime_shift !== null ? item.overtime_shift?.check_out_time.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
+                                                <span>{item?.overtime_shift !== null ? item.overtime_shift?.check_out_time?.substring(0, 5) : <FontAwesomeIcon icon={faClock} style={{color: '#f77846'}}/>}</span>
                                             </td>
                                         </tr>
                                     ) : null
