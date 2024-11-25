@@ -10,7 +10,17 @@ import { Get_Leave_Count, Send_Leave_Request } from '../../../../../apis/staffAP
 
 const loginSchemas = Yup.object().shape({
     date_start: Yup.string().required('⚠ Vui lòng chọn ngày'),
-    date_end: Yup.string().required('⚠ Vui lòng chọn ngày'),
+    date_end: Yup.string()
+        .required('⚠ Vui lòng chọn ngày')
+        .test('is-after-start', '⚠ Ngày kết thúc phải sau hoặc bằng ngày bắt đầu', function(value) {
+            const { date_start } = this.parent;
+            if (!date_start || !value) return false;
+            
+            const startDate = new Date(date_start);
+            const endDate = new Date(value);
+            
+            return endDate >= startDate;
+        }),
 });
 
 const LeaveApplication = () => {
@@ -32,7 +42,6 @@ const LeaveApplication = () => {
     
     const handleSubmit = async (values) => {
         try {
-
             const check = await Get_Leave_Count();
             if(check.status === 200) {
                 if(check.data.leave_requests_count < 2) {
@@ -69,7 +78,6 @@ const LeaveApplication = () => {
                     {({ isSubmitting, values, setFieldValue }) => (
                         <Form>
                             <div className={`${styles.field_form} mb-4`}>
-
                                 <div className={`${styles.space_center} `}>
                                     <div className={`${styles.date_container} `} style={{ height: '90px'}}>
                                         <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Nghỉ từ ngày ✱:</span>
@@ -80,6 +88,10 @@ const LeaveApplication = () => {
                                                 onChange={(date) => {
                                                     setSelectedDateStart(date);
                                                     setFieldValue("date_start", date ? date.toISOString() : "");
+                                                    if (selectedDateEnd && date && date > selectedDateEnd) {
+                                                        setSelectedDateEnd(date);
+                                                        setFieldValue("date_end", date.toISOString());
+                                                    }
                                                 }}
                                                 dateFormat="dd/MM/yyyy"
                                                 placeholderText="Chọn ngày"
@@ -95,6 +107,7 @@ const LeaveApplication = () => {
                                             <DatePicker
                                                 name="date_end"
                                                 selected={selectedDateEnd}
+                                                minDate={selectedDateStart}
                                                 onChange={(date) => {
                                                     setSelectedDateEnd(date);
                                                     setFieldValue("date_end", date ? date.toISOString() : "");
@@ -138,16 +151,9 @@ const LeaveApplication = () => {
                                         type="file"
                                         className={styles.hidden_input}
                                         onChange={handleFileUpload}
-                                        // accept=".doc" 
                                     />
                                 </div>
                             </div>
-
-                            {/* {selectedFile ?
-
-                            :
-                                <></>
-                            } */}
 
                             <div className={`${styles.custom_btn} mt-5`}>
                                 <button>

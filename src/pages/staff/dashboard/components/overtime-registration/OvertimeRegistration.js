@@ -13,7 +13,17 @@ import { UseToast } from '../../../../../hooks/ToastProvider';
 const loginSchemas = Yup.object().shape({
     day_work: Yup.string().required('⚠ Vui lòng chọn ngày muốn đăng ký'),
     hour_start: Yup.string().required('⚠ Vui lòng chọn thời gian bắt đầu'),
-    hour_end: Yup.string().required('⚠ Vui lòng chọn thời gian kết thúc'),
+    hour_end: Yup.string()
+        .required('⚠ Vui lòng chọn thời gian kết thúc')
+        .test('is-after-start', '⚠ Thời gian kết thúc phải sau thời gian bắt đầu', function(value) {
+            const { hour_start } = this.parent;
+            if (!hour_start || !value) return false;
+            
+            const startTime = new Date(hour_start);
+            const endTime = new Date(value);
+            
+            return endTime > startTime;
+        }),
 });
 
 const OvertimeRegistration = () => {
@@ -51,7 +61,7 @@ const OvertimeRegistration = () => {
             <div className={`${styles.overtime_form} `}>
                 <Formik
                     initialValues={{
-                        day_word: '',
+                        day_work: '',
                         hour_start: '',
                         hour_end: '',
                         note: '',
@@ -90,6 +100,10 @@ const OvertimeRegistration = () => {
                                                 onChange={(hour_start) => {
                                                     setSelectedHourStart(hour_start);
                                                     setFieldValue("hour_start", hour_start ? hour_start.toISOString() : "");
+                                                    if (selectedHourEnd && hour_start && hour_start >= selectedHourEnd) {
+                                                        setSelectedHourEnd(null);
+                                                        setFieldValue("hour_end", "");
+                                                    }
                                                 }}
                                                 showTimeSelect
                                                 showTimeSelectOnly
@@ -119,7 +133,7 @@ const OvertimeRegistration = () => {
                                                 showTimeSelectOnly
                                                 timeCaption="Thời gian"
                                                 dateFormat="HH:mm"
-                                                minTime={new Date(new Date().setHours(17, 30, 0, 0))}
+                                                minTime={selectedHourStart ? new Date(selectedHourStart.getTime() + 60000) : new Date(new Date().setHours(17, 30, 0, 0))}
                                                 maxTime={new Date(new Date().setHours(23, 0, 0, 0))}
                                                 placeholderText="Chọn giờ kết thúc"
                                                 autoComplete="off"
