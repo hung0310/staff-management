@@ -45,7 +45,7 @@ const StaffManagement = () => {
 
     const handleClick_AddStaff = (_item) => {
         setModalData(_item);
-        setNameModal('Chỉnh sửa thông tin nhân viên');
+        setNameModal('Thêm thông tin nhân viên');
         setShowModal(true);
     }
 
@@ -263,7 +263,7 @@ const StaffManagement = () => {
             <ModalStaffManagement 
                 show={showModal}
                 onHide={() => setShowModal(false)}
-                modalData={modalData}
+                modalData={modalData} 
                 setModalData={setModalData}
                 title={nameModal}
             />
