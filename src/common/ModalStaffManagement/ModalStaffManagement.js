@@ -120,7 +120,7 @@ const ModalStaffManagement = (props) => {
                             department: modalData.em_item || '',
                             position: modalData.em_item || '',
                             username: '',
-                            password: ''
+                            password: '12345678'
                         }}
                         validationSchema={loginSchemas}
                         onSubmit={handleSubmit}

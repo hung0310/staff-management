@@ -21,7 +21,7 @@ const TrackWork = ({setSelectedContent}) => {
     const [dailyTimesheet, setDailyTimesheet] = useState({});
     const { showToast } = UseToast();
     const [dateNow, setDateNow] = useState('');
-    const [statusButton, setStatusButton] = useState(false);
+    const [statusButton, setStatusButton] = useState(true);
     const [dataProfile, setDataProfile] = useState({});
     const { minutes, seconds } = useCountdown();
 
@@ -62,7 +62,7 @@ const TrackWork = ({setSelectedContent}) => {
             }             
         }
 
-        if(countOutDay <= 2) {
+        if(countOutDay < 2) {
             if(totalMinitues >= (11 * 60 + 30) && totalMinitues <= (12 * 60))  {
                 try {
                     result = await CheckOut({'shift_type': 'MORNING'});
@@ -95,7 +95,7 @@ const TrackWork = ({setSelectedContent}) => {
                 }     
             }
 
-            if((totalMinitues >= (11 * 60 + 30) && totalMinitues <= (12 * 60)) || (totalMinitues >= (17 * 60) && totalMinitues <= (17 * 60 + 30)))
+            if((totalMinitues >= (11 * 60 + 30) && totalMinitues < (11 * 60 + 45)) || (totalMinitues >= (17 * 60) && totalMinitues < (17 * 60 + 15)))
                 status = false;
         }
 
@@ -103,16 +103,19 @@ const TrackWork = ({setSelectedContent}) => {
             showToast("Chấm công thành công!", "success");
             setStatusButton(true);
         } else {
-            showToast("Bạn đã chấm công ca này rồi!", "error");
             if(!status)
                 showToast("Bạn đã hết phép về sớm trong tháng này!", "error");
+            else showToast("Bạn đã chấm công ca này rồi!", "error"); 
+            
             setStatusButton(true);
         }
     }
 
     const handle_TimeKeeping = () => {
         const date = new Date();
+        setStatusButton(true);
         SetTime(date.getHours(), date.getMinutes());
+        fetchDailyTimeSheet();
     }
 
     useEffect(() => {
@@ -187,7 +190,7 @@ const TrackWork = ({setSelectedContent}) => {
         checkTime();
         const interval = setInterval(checkTime, 60 * 1000);
         return () => clearInterval(interval);
-    }, [statusButton, setStatusButton]);
+    }, []);
 
     return (
         <div className={`${styles.timesheet} `}>
