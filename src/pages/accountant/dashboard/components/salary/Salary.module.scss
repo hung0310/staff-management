@@ -32,7 +32,7 @@
                 .custom_table {
                     margin-top: 10px;
                     min-width: 100%;
-                    width: 120%;
+                    width: 100%;
                     table-layout: fixed;
                     border-collapse: collapse;
 
@@ -52,15 +52,15 @@
                             }
 
                             .id_tb {
-                                width: 10%;
+                                width: 5%;
                             }
 
                             .depart_tb {
-                                width: 20%;
+                                width: 15%;
                             }
 
                             .name_tb {
-                                width: 20%;
+                                width: 15%;
                             }
 
                             .regular_tb {
@@ -88,7 +88,7 @@
                             }
 
                             .total_salary_tb {
-                                width: 20%;
+                                width: 10%;
                             }
                         }
                     }

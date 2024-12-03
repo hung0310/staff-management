@@ -17,7 +17,7 @@ const Salary = () => {
     const [previousPage, setPreviousPage] = useState(null);
     const { currentPage, PaginationComponent } = useReactPaginate(totalPage, totalRows);
     const [monthChoose, setMonthChoose] = useState('');
-    const [departmentChoose, setDepartmentChoose] = useState('');
+    const [departmentChoose, setDepartmentChoose] = useState('all');
     const [dataMain, setDataMain] = useState([]);
     const date = new Date();
     const currentMonth = date.getMonth() + 1;
@@ -37,49 +37,6 @@ const Salary = () => {
         }
     }, [setDepartmentData]);
 
-    useEffect(() => {
-        try {
-            const fetchData = async () => {
-                const result1 = await Get_Salary_Month('', currentMonth, currentYear, '');
-                const result2 = await Get_Tracking_Time_Employee('', '');
-                if(result1.status === 200 && result2.status === 200) {
-                    const salaryData = result1.data.results || [];
-                    const trackingData = result2.data.results || [];
-
-                    const mergeData = salaryData.map((salary)=> {
-                        const tracking = trackingData.find(
-                            (track) => track.employee?.employee_id === salary.employee?.employee_id
-                        )
-
-                        return {
-                            employee_id: salary.employee?.employee_id,
-                            full_name: salary.employee?.full_name,
-                            department: salary.employee?.department,
-                            base_salary: salary?.base_salary,
-                            overtime_pay: salary?.overtime_pay,
-                            attendance_bonus: salary?.attendance_bonus,
-                            gross_salary: salary?.gross_salary,
-                            working_days: tracking?.working_days || 0,
-                            regular_hours: tracking?.regular_hours || 0,
-                            overtime_hours: tracking?.overtime_hours || 0,
-                            leave_days: tracking?.leave_days || 0,
-                        };
-                    });
-
-                    setDataMain(mergeData);
-                    console.log(">>> SalaryData: ", salaryData);
-                    console.log(">>> TrakingData: ", trackingData);
-                    console.log("MergeData: ", mergeData);
-                    setNextPage(result1.data.next_page);
-                    setPreviousPage(result1.data.previous_page);
-                }
-            }
-            fetchData();
-        } catch(error) {
-            console.log(error);
-        }
-    }, [currentMonth, currentYear]);
-
     const handleChooseDepartment = (e) => {
         const selectedDepartment = e.target.value;
         setDepartmentChoose(selectedDepartment);
@@ -91,9 +48,9 @@ const Salary = () => {
     };
 
     useEffect(() => {
-        if(departmentChoose !== '' && monthChoose !== '' ) {
+        if(monthChoose !== '' ) {
             const fetchData = async () => {
-                const result1 = await Get_Salary_Month(departmentChoose, monthChoose, currentYear, currentPage);
+                const result1 = await Get_Salary_Month(departmentChoose === 'all' ? '' : departmentChoose, monthChoose, currentYear, currentPage);
                 const result2 = await Get_Tracking_Time_Employee('', '');
                 if(result1.status === 200 && result2.status === 200) {
                     const salaryData = result1.data.results || [];
@@ -160,6 +117,7 @@ const Salary = () => {
                         <div className={`${styles.select_option} `}>
                             <select name="name-of-select" id="id-of-select" onChange={handleChooseDepartment}>
                                 <option value="" disabled selected>Bộ phận làm việc</option>
+                                <option value="all">Xem tất cả</option>
                                 {departmentData.map((item, index) => (
                                     <option value={item.name} key={index}>{item.name}</option>
                                 ))}
@@ -236,7 +194,7 @@ const Salary = () => {
 
                                     <th className={`${styles.total_hour_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>TỔNG SỐ GIỜ LÀM</span>
+                                            <span>TỔNG GIỜ LÀM</span>
                                         </div>
                                     </th>
 

@@ -141,7 +141,7 @@ const StaffSituation = () => {
 
                                     <th className={`${styles.total_tb} `}>
                                         <div className={`${styles.title} `}>
-                                            <span>TỔNG SỐ GIỜ LÀM</span>
+                                            <span>TỔNG GIỜ LÀM</span>
                                         </div>
                                     </th>
 
