@@ -68,8 +68,8 @@ const LeaveApplication = () => {
             <div className={`${styles.leave_application_container}`}>
                 <Formik
                     initialValues={{
-                        date_start: '',
-                        date_end: '',
+                        date_start: selectedDateStart.toString(),
+                        date_end: selectedDateEnd.toString(),
                         note: '',
                     }}
                     validationSchema={loginSchemas}

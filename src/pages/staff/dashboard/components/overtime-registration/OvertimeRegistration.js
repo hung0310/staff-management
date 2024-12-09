@@ -61,7 +61,7 @@ const OvertimeRegistration = () => {
             <div className={`${styles.overtime_form} `}>
                 <Formik
                     initialValues={{
-                        day_work: '',
+                        day_work: selectedDay.toISOString(),
                         hour_start: '',
                         hour_end: '',
                         note: '',

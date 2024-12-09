@@ -4,6 +4,7 @@ import { parse } from "date-fns";
 import DatePicker from 'react-datepicker';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { format } from "date-fns";
 import styles from './ModalStaffManagement.module.scss';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -15,7 +16,7 @@ import { Create_Account_Emp, Get_DropDown_Department, Get_DropDown_Position } fr
 const loginSchemas = Yup.object().shape({
     name: Yup.string().required('⚠ Vui lòng nhập tên nhân viên'),
     location: Yup.string().required('⚠ Vui lòng nhập địa chỉ'),
-    date: Yup.string().required('⚠ Vui lòng nhập ngày bắt đầu làm việc'),
+    date_join: Yup.string().required('⚠ Vui lòng nhập ngày bắt đầu làm việc'),
     email: Yup.string().required('⚠ Vui lòng nhập email nhân viên'),
     department: Yup.string().required('⚠ Vui lòng chọn bộ phận làm việc'),
     position: Yup.string().required('⚠ Vui lòng chọn chức vụ'),
@@ -30,13 +31,13 @@ const ModalStaffManagement = (props) => {
     const [positiontData, setPositiontData] = useState([]);
     const { showToast } = UseToast();
 
-    useEffect(() => {
-        if (modalData.date) {
-            setSelectedDate(parse(modalData.date, "dd/MM/yyyy", new Date()));
-        } else {
-            setSelectedDate(new Date());
-        }
-    }, [modalData.date]);
+    // useEffect(() => {
+    //     if (modalData.date) {
+    //         setSelectedDate(parse(modalData.date, "dd/MM/yyyy", new Date()));
+    //     } else {
+    //         setSelectedDate(new Date());
+    //     }
+    // }, [modalData.date]);
 
     useEffect(() => {
         try {
@@ -67,6 +68,7 @@ const ModalStaffManagement = (props) => {
     }, [setDepartmentData]);
     
     const handleSubmit = async (values) => {
+        const formattedDate = format(new Date(values.date_join), "yyyy-MM-dd");
         const data = {
             user : {
                 username: values.username,
@@ -77,7 +79,7 @@ const ModalStaffManagement = (props) => {
             position_id: values.position,
             full_name: values.name,
             address: values.location,
-            join_date: values.date.split('T')[0]
+            join_date: formattedDate
         }
         console.log(data);
         try {
@@ -115,7 +117,7 @@ const ModalStaffManagement = (props) => {
                         initialValues={{
                             name: modalData.em_name || '',
                             location: modalData.from || '',
-                            date: modalData.date || '',
+                            date_join: selectedDate.toString() || '',
                             email: modalData.em_name || '',
                             department: modalData.em_item || '',
                             position: modalData.em_item || '',
@@ -159,11 +161,11 @@ const ModalStaffManagement = (props) => {
                                             <span className='fw-bold' style={{ color: "#293749", fontSize: '13px' }} >Ngày bắt đầu:</span>
                                             <div className={`${styles.date_picker}`} style={{paddingBottom: '10px'}}>
                                                 <DatePicker
-                                                    name="date"
+                                                    name="date_join"
                                                     selected={selectedDate}
                                                     onChange={(date) => {
                                                         setSelectedDate(date);
-                                                        setFieldValue("date", date ? date.toISOString() : "");
+                                                        setFieldValue("date_join", date ? date.toISOString() : "");
                                                     }}
                                                     dateFormat="dd/MM/yyyy"
                                                     placeholderText="Chọn ngày"

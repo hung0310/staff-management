@@ -84,7 +84,8 @@ const StaffManagement = () => {
 
     const handleChooseDepartment = async (e) => {
         try {
-            const result = await Get_List_Employee(e.target.value, currentPage);
+            const depart = e.target.value;
+            const result = await Get_List_Employee(depart === 'all' ? '' : depart, currentPage);
             if(result.status === 200) {
                 const total = Math.ceil(result.data.totalRows / result.data.page_size);
                 setTotalPage(total);
@@ -112,6 +113,7 @@ const StaffManagement = () => {
                     <div className={`${styles.select_option} `}>
                         <select name="name-of-select" id="id-of-select" onChange={handleChooseDepartment}>
                             <option value="" disabled selected>Bộ phận nhân sự</option>
+                            <option value="all">Xem tất cả</option>
                             {departmentData.map((item, index) => (
                                 <option value={item.name} key={index}>{item.name}</option>
                             ))}

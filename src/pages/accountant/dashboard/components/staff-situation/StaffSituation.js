@@ -59,7 +59,9 @@ const StaffSituation = () => {
         try {
             const nameFile = e.target.value.toUpperCase();
             setDepartmentFile(nameFile);
-            const result = await Get_Tracking_Time_Employee(e.target.value, currentPage);
+
+            const depart = e.target.value;
+            const result = await Get_Tracking_Time_Employee(depart === 'all' ? '' : depart, currentPage);
             if(result.status === 200) {
                 const total = Math.ceil(result.data.totalRows / result.data.page_size);
                 setTotalPage(total);
@@ -85,6 +87,7 @@ const StaffSituation = () => {
                     <div className={`${styles.select_option} `}>
                         <select name="name-of-select" id="id-of-select" onChange={handleChooseDepartment}>
                             <option value="" disabled selected>Bộ phận nhân sự</option>
+                            <option value="all">Xem tất cả</option>
                             {departmentData.map((item, index) => (
                                 <option value={item.name} key={index}>{item.name}</option>
                             ))}
@@ -113,7 +116,7 @@ const StaffSituation = () => {
                                         <div className={`${styles.title} `}>
                                             <span>TÊN NHÂN VIÊN</span>
                                         </div>
-                                    </th>
+                                    </th> 
 
                                     <th className={`${styles.day_tb} `}>
                                         <div className={`${styles.title} `}>
@@ -172,7 +175,7 @@ const StaffSituation = () => {
                                         <tbody key={index}>
                                             <tr>
                                                 <td>
-                                                    <span style={{ color: '#F19828', fontWeight: '500' }}>{item.employee.employee_id}</span>
+                                                    <span style={{ color: '#F19828', fontWeight: '500', fontSize: '12px' }}>{item.employee.employee_id}</span>
                                                 </td>
                                                 <td>
                                                     <span>{item.employee.department}</span>
