@@ -71,10 +71,10 @@ const ModalStaffManagement = (props) => {
         const formattedDate = format(new Date(values.date_join), "yyyy-MM-dd");
         const data = {
             user : {
+                email: values.email,
                 username: values.username,
                 password: values.password
             },
-            email: values.email,
             department_id: values.department,
             position_id: values.position,
             full_name: values.name,

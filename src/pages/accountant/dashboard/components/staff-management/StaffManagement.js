@@ -41,7 +41,7 @@ const StaffManagement = () => {
         } catch(error) {
             console.log(error);
         }
-    }, []);
+    }, [setDataEmp]);
 
     const handleClick_AddStaff = (_item) => {
         setModalData(_item);

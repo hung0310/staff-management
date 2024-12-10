@@ -23,7 +23,7 @@ const loginSchemas = Yup.object().shape({
         }),
 });
 
-const LeaveApplication = () => {
+const LeaveApplication = () => { 
     const [selectedFile, setSelectedFile] = useState(null);
     const fileInputRef = useRef(null);
     const [selectedDateStart, setSelectedDateStart] = useState(new Date());
