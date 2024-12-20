@@ -235,13 +235,9 @@ const StaffSituation = () => {
                 </div>
             </div>
 
-            {nextPage && previousPage !== null ?
-                <div className={`${styles.paginnate} mt-5`}>
-                    <PaginationComponent/>
-                </div>
-            :
-                <></>
-            }
+            <div className={`${styles.paginnate} mt-5`}>
+                <PaginationComponent/>
+            </div>
         </div>
     );
 };
