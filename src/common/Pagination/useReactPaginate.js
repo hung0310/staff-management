@@ -1,21 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 
 export const useReactPaginate = (totalPage, totalRows) => {
     const [currentPage, setCurrentPage] = useState(1);
+    const [forcedPage, setForcedPage] = useState(0);
+
+    useEffect(() => {
+        setForcedPage(currentPage - 1);
+    }, [currentPage]);
 
     const handlePageClick = (event) => {
         setCurrentPage(event.selected + 1);
     };
 
     const handlePrevPage = () => {
-        // setCurrentPage(prev => Math.max(prev - 2, 1));
-        setCurrentPage(Math.max(1, 1));
+        setCurrentPage(prev => Math.max(prev - 1, 1));
     };
 
     const handleNextPage = () => {
-        // setCurrentPage(prev => Math.min(prev + 2, totalPage));
-        setCurrentPage(Math.min(totalRows, totalPage));
+        setCurrentPage(prev => Math.min(prev + 1, totalPage));
     };
 
     const PaginationComponent = () => ( 
@@ -33,7 +36,7 @@ export const useReactPaginate = (totalPage, totalRows) => {
                 nextLabel=">"
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={5}
-                pageCount={totalPage}
+                pageCount={Math.max(totalPage, 1)} // Đảm bảo luôn có ít nhất 1 trang
                 previousLabel="<"
                 pageClassName="page-item"
                 pageLinkClassName="page-link"
@@ -45,7 +48,7 @@ export const useReactPaginate = (totalPage, totalRows) => {
                 breakLinkClassName="page-link"
                 containerClassName="pagination"
                 activeClassName="active"
-                forcePage={currentPage - 1}
+                forcePage={forcedPage}
             />
             <button
                 onClick={handleNextPage}
